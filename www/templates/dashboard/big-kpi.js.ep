@@ -1,0 +1,7 @@
+
+$.getJSON("api/live", function(data){
+    $.each(data, function(key, val){
+	$("#kpi-o-"+key).text(val);
+    });
+});
+

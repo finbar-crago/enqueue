@@ -3,3 +3,10 @@
 
 %= include 'dashboard/big-kpi'
 
+% content_for 'page_js' => begin
+%= javascript begin
+
+%= include 'dashboard/big-kpi', format => 'js'
+
+% end
+% end
