@@ -7,6 +7,8 @@ sub startup {
   my $r = $self->routes;
 
   $r->get('/')->to('Dashboard#main');
+
+  $r->get('/api/live')->to('Live#main');
 }
 
 1;
