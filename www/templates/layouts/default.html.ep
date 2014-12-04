@@ -20,7 +20,7 @@
   </head>
   <body>
     <div id="wrapper">
-      <%= include 'sidebar' %>
+      <%= include 'nav/main' %>
       <div id="page-wrapper">
         <div class="container-fluid">
           <div class="col-lg-12">

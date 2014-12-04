@@ -1,0 +1,5 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+%= include 'nav/navbar-header'
+%= include 'nav/top-menu'
+%= include 'nav/side-menu'
+</nav>
