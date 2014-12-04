@@ -7,11 +7,11 @@
     </li>
 
     <li>
-      <a href="/reports"><i class="fa fa-fw fa-bar-chart-o"></i> Reports</a>
+      <a href="/reports"><i class="fa fa-fw fa-bar-chart-o"></i> Reporting</a>
     </li>
 
     <li>
-      <a href="/logs"><i class="fa fa-fw fa-table"></i> Logsb</a>
+      <a href="/logs"><i class="fa fa-fw fa-table"></i> Logs</a>
     </li>
 
   </ul>
