@@ -11,7 +11,7 @@
           <i class="fa fa-<%= $icon %> fa-5x"></i>
         </div>
         <div class="col-xs-9 text-right">
-          <div id="kpi-o-<%= $name %>" class="huge">---</div>
+          <div id="kpi-dat-<%= $name %>" class="huge">---</div>
           <div><%= $text %></div>
         </div>
       </div>
