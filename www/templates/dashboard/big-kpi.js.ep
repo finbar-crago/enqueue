@@ -1,7 +1,11 @@
-
-$.getJSON("api/metrics", function(data){
-    $.each(data, function(key, val){
-	$("#kpi-dat-"+key).text(val);
+function getMetrics(){
+    $.getJSON("api/metrics", function(data){
+	$.each(data, function(key, val){
+	    $("#kpi-dat-"+key).text(val);
+	});
     });
-});
+}
+
+getMetrics();
+setInterval(getMetrics, 7000);
 
