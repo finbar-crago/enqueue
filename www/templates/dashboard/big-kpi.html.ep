@@ -33,5 +33,5 @@
 <%= $bigKPI->('calls', 'Calls in queue', '/log/calls', 'phone') %>
 <%= $bigKPI->('agents', 'Available agents', '/log/agent/', 'users') %>
 <%= $bigKPI->('wait', 'Avg. wait','/report/wait', 'spinner') %>
-<%= $bigKPI->('drop', 'Abandoned', 'report/drop', 'frown-o') %>
+<%= $bigKPI->('drops', 'Abandoned', 'report/drop', 'frown-o') %>
 </div>

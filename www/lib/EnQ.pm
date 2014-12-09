@@ -8,7 +8,7 @@ sub startup {
 
   $r->get('/')->to('Dashboard#main');
 
-  $r->get('/api/live')->to('Live#main');
+  $r->get('/api/metrics')->to('Metrics#main');
 }
 
 1;

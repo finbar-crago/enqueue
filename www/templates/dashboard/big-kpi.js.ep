@@ -1,5 +1,5 @@
 
-$.getJSON("api/live", function(data){
+$.getJSON("api/metrics", function(data){
     $.each(data, function(key, val){
 	$("#kpi-dat-"+key).text(val);
     });
