@@ -1,26 +1,13 @@
 <% my $table = begin %>
-<% my (@hdr, @dat) = @_; %>
-
-
+<% my ($id, @hdr) = @_; %>
 <div class="table-responsive">
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-	<% for (@hdr) { %>
-        <th><%= $_ %></th>
-	<% } %>
-
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-	<td>DATA</td>
-      </tr>
-    </tbody>
+  <table id="<%= $id %>" class="table table-bordered table-hover">
+    <thead><tr><% for (@hdr) { %><th><%= $_ %></th><% } %></tr></thead>
+    <tbody><tr><% for (0..$#hdr) { %><td>&nbsp;</td><% } %></tr></tbody>
   </table>
 </div>
 <% end %>
 
-<div class="col-lg-6"><%= $table->(qw(This is data), \(1..5)) %></div>
-<div class="col-lg-6"><%= $table->(\(5..9), \(1..5)) %></div>
+<div class="col-lg-6"><%= $table->('tbl1', qw(This is data)) %></div>
+<div class="col-lg-6"><%= $table->('tbl2', qw(more data)) %></div>
 
