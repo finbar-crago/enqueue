@@ -10,7 +10,8 @@ function mk_pjsip {
     fi
 
     cd $PJSIP_DIR
-    ./configure
+
+    ./configure CFLAGS=-fPIC CXXFLAGS=-fPIC
     make dep && make && make install
 }
 
@@ -24,8 +25,23 @@ function mk_asterisk {
     fi
 
     cd $AST_DIR
+
     ./configure
     make && make install
 }
 
-mk_pjsip
+case "$1" in
+    pjsip)
+	mk_pjsip
+	;;
+    asterisk)
+	mk_asterisk
+	;;
+    all)
+	mk_pjsip
+	mk_asterisk
+	;;
+    *)
+	echo "usage: $0 [ pjsip | asterisk | all]"
+    ;;
+esac
