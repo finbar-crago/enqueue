@@ -11,7 +11,7 @@ function mk_pjsip {
 
     cd $PJSIP_DIR
 
-    ./configure CFLAGS=-fPIC CXXFLAGS=-fPIC
+    ./configure --enable-shared --disable-sound --disable-video --disable-resample
     make dep && make && make install
 }
 
