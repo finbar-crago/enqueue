@@ -1,4 +1,4 @@
-pakage AstConf;
+package EnQ;
 use strict;
 use warnings;
 
@@ -81,13 +81,14 @@ sub new {
     return bless $closure, $class;
 }
 
-
-sub NewAcc {
+sub is_error {
     my $self = shift;
-    ($uid, $exten, $auth) = @_;
-
+    if($self->_error){
+	return $self->_error;
+    } else {
+	return undef;
+    }
 }
-
 
 sub AUTOLOAD {
     our $AUTOLOAD =~ s/.*:://;
