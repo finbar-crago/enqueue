@@ -3,8 +3,10 @@ use strict;
 use warnings;
 
 use FindBin;
-BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
+BEGIN {
+    unshift @INC, "$FindBin::Bin/../lib";
+    $ENV{MOJO_HOME} = "$FindBin::Bin/../www";
+}
 
-# Start command line interface for application
 require Mojolicious::Commands;
 Mojolicious::Commands->start_app('EnQ::WWW', 'daemon', '-l', 'http://*:3000');
