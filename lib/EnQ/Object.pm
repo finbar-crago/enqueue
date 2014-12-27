@@ -25,6 +25,7 @@ sub _init {
 
     my $_closure = sub{
 	my $field = shift;
+	return $self->{'_error'} if $field eq '_error';
 	return $self->{'data'}{$field} if $field =~ /^_/;
 	$self->{'_error'} = undef;
 
