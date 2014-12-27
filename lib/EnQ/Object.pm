@@ -29,6 +29,11 @@ sub _init {
 	return $self->{'data'}{$field} if $field =~ /^_/;
 	$self->{'_error'} = undef;
 
+	if(!exists($self->{'data'}{$field})){
+	    $self->{'_error'} = 'field undefined';
+	    return undef;
+	}
+
 	if(@_){ #write var
 
 	    if($self->{'data'}{$field} && $self->{'data'}{$field}{'mode'} & WRITE){
