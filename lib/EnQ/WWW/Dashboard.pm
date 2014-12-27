@@ -1,4 +1,4 @@
-package EnQ::Dashboard;
+package EnQ::WWW::Dashboard;
 use Mojo::Base 'Mojolicious::Controller';
 
 sub main {

@@ -1,4 +1,4 @@
-package EnQ;
+package EnQ::WWW;
 use Mojo::Base 'Mojolicious';
 
 

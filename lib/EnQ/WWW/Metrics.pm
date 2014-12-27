@@ -1,4 +1,4 @@
-package EnQ::Metrics;
+package EnQ::WWW::Metrics;
 use Mojo::Base 'Mojolicious::Controller';
 
 sub main {
