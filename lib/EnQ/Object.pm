@@ -87,6 +87,15 @@ sub new {
     return bless $closure, $class;
 }
 
+sub add {
+    my $obj = shift;
+    my ($name, $args) = @_;
+    $obj->{'data'}{$name} = $args;
+    if(!$obj->{'data'}{$name}{'mode'}){
+	$obj->{'data'}{$name}{'mode'} = READ|WRITE;
+    }
+}
+
 sub is_error {
     my $self = shift;
     if($self->_error){
