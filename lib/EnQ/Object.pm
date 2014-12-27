@@ -1,4 +1,4 @@
-package EnQ;
+package EnQ::Object;
 use strict;
 use warnings;
 
