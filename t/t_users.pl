@@ -13,6 +13,9 @@ $u->uid("finbar") or print $u->is_error();
 $u->extn("12345") or print $u->is_error();
 
 print "user:", $u->uid;
-print "hash:", $u->extn;
+print "extn:", $u->extn;
 
 $u->extn("ABCD") or print $u->is_error();
+
+$u->badName("Hello") or print $u->is_error();
+print $u->badName;# or print $u->is_error();
