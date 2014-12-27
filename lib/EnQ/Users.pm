@@ -8,7 +8,7 @@ use constant { READ => 1, WRITE => 2, REQURED => 4, REGEX => 8, CB => 16 };
 my $Object = {
     data => {
 	uid  => {mode => READ|WRITE},
-	extn => {mode => READ|WRITE},
+	extn => {mode => READ|WRITE|REGEX, regex => '^[0-9]+$'},
     },
     db => { table  => 'users', },
 };
