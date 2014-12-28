@@ -91,9 +91,19 @@ sub add {
     my $obj = shift;
     my ($name, $args) = @_;
     $obj->{'data'}{$name} = $args;
-    if(!$obj->{'data'}{$name}{'mode'}){
-	$obj->{'data'}{$name}{'mode'} = READ|WRITE;
+
+    my $i = 0;
+    for(split /\|/, $obj->{'data'}{$name}{'mode'}){
+	if    ($_ eq 'READ'   ){ $i|= 1  }
+	elsif ($_ eq 'WRITE'  ){ $i|= 2  }
+	elsif ($_ eq 'REQURED'){ $i|= 4  }
+	elsif ($_ eq 'REGEX'  ){ $i|= 8  }
+	elsif ($_ eq 'CB'     ){ $i|= 16 }
     }
+    if(!($i & (READ|WRITE))){
+	$i|=(READ|WRITE);
+    }
+    $obj->{'data'}{$name}{'mode'} = $i;
 }
 
 sub is_error {
