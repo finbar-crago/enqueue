@@ -91,6 +91,7 @@ sub add {
     my $obj = shift;
     my ($name, $args) = @_;
     $obj->{'data'}{$name} = $args;
+    $obj->{'data'}{$name}{'mode'}|='';
 
     my $i = 0;
     for(split /\|/, $obj->{'data'}{$name}{'mode'}){
