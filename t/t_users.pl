@@ -19,3 +19,5 @@ $u->extn("ABCD") or print $u->is_error();
 
 $u->badName("Hello") or print $u->is_error();
 print $u->badName;# or print $u->is_error();
+
+print $u->confSip();

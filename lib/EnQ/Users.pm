@@ -12,9 +12,25 @@ my $Object = {
 sub new {
     my $class = shift;
     EnQ::Object::add($Object, 'uid');
-    EnQ::Object::add($Object, 'extn', {mode => 'READ|WRITE|REGEX', regex => '^[0-9]+$'});
+    EnQ::Object::add($Object, 'name');
+    EnQ::Object::add($Object, 'extn', {mode => 'REGEX', regex => '^[0-9]+$'});
+    EnQ::Object::add($Object, 'sipPass');
+    EnQ::Object::add($Object, 'wwwPass');
+
     my $closure = EnQ::Object::_init($Object);
     return bless $closure, $class;
+}
+
+sub confSip {
+    my $this = shift;
+    my $ret  =
+	sprintf("[%d]\n", $this->extn).
+	"type=endpoint\n".
+	sprintf("context=%s\n", '???').
+	sprintf("auth=%d\n", $this->extn).
+	sprintf("aor=%d\n", $this->extn);
+
+    return $ret;
 }
 
 1;
