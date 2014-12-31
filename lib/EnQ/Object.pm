@@ -87,6 +87,13 @@ sub new {
     return bless $closure, $class;
 }
 
+sub get {
+    my $obj = shift;
+    my ($id) = @_;
+
+    # DB Stuff here...
+}
+
 sub add {
     my $obj = shift;
     my ($name, $args) = @_;

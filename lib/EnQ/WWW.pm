@@ -12,7 +12,7 @@ sub startup {
 
   $r->get('/api/user')->to('Users#list');
   $r->get('/api/user/:uid')->to('Users#info');
-  $r->post('/api/user')->to('Users#new');
+  $r->post('/api/user')->to('Users#add');
 
 }
 
