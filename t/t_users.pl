@@ -21,3 +21,8 @@ $u->badName("Hello") or print $u->is_error();
 print $u->badName;# or print $u->is_error();
 
 print $u->confSip();
+
+use Data::Dumper;
+my $p = EnQ::Users->new();
+$p->pull("test");
+print Dumper $p->data();

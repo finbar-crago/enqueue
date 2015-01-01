@@ -5,8 +5,8 @@ use EnQ::Users;
 sub info {
   my $self = shift;
   my $u = EnQ::Users->new();
-  $u->get($self->param('uid'));
-  $self->render(json => {$self->param('uid')});
+  $u->pull($self->param('uid'));
+  $self->render(json => $u->data);
 }
 
 sub add {

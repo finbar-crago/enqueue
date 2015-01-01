@@ -26,7 +26,7 @@ sub _init {
     my $_closure = sub{
 	my $field = shift;
 	return $self->{'_error'} if $field eq '_error';
-	return $self->{'data'}{$field} if $field =~ /^_/;
+	return $self->{$1} if $field =~ /^_(.+)/;
 	$self->{'_error'} = undef;
 
 	if(!exists($self->{'data'}{$field})){
@@ -87,18 +87,6 @@ sub new {
     return bless $closure, $class;
 }
 
-sub pull {
-    my $obj = shift;
-    my ($id) = @_;
-
-    # DB Stuff here...
-}
-
-sub push {
-    my $obj = shift;
-    # DB Stuff here...
-}
-
 sub add {
     my $obj = shift;
     my ($name, $args) = @_;
@@ -117,6 +105,27 @@ sub add {
 	$i|=(READ|WRITE);
     }
     $obj->{'data'}{$name}{'mode'} = $i;
+}
+
+sub push {
+    my $this = shift;
+    # DB Stuff here...
+}
+
+sub pull {
+    my $this = shift;
+    my ($id) = @_;
+    $this->_data->{$this->_db->{'key'}}->{'value'} = $id;
+    # DB Stuff here...
+}
+
+sub data {
+    my $this = shift;
+    my $ret = {};
+    for (keys $this->_data){
+	$ret->{$_} = $this->$_;
+    }
+    return $ret;
 }
 
 sub is_error {
