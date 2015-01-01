@@ -13,7 +13,13 @@ sub add {
   my $self = shift;
   my $u = EnQ::Users->new();
 
+  $u->name($self->param('uid'));
   $u->name($self->param('name'));
+  $u->name($self->param('extn'));
+  $u->name($self->param('sipPass'));
+  $u->name($self->param('wwwPass'));
+
+  $u->push();
 
   $self->render(json => {});
 }
