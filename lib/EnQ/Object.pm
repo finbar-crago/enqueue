@@ -87,7 +87,7 @@ sub new {
     return bless $closure, $class;
 }
 
-sub get {
+sub pull {
     my $obj = shift;
     my ($id) = @_;
 
