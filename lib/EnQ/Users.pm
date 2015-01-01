@@ -6,7 +6,10 @@ use parent qw(EnQ::Object);
 
 my $Object = {
     data => { },
-    db => { table  => 'users', },
+    db => {
+	key   => 'uid',
+	table => 'users',
+    },
 };
 
 sub new {
