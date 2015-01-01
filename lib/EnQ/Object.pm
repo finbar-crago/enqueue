@@ -94,6 +94,11 @@ sub get {
     # DB Stuff here...
 }
 
+sub push {
+    my $obj = shift;
+    # DB Stuff here...
+}
+
 sub add {
     my $obj = shift;
     my ($name, $args) = @_;
