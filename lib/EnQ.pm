@@ -4,7 +4,7 @@ use warnings;
 
 use parent qw(EnQ::Object);
 
-sub new {
+sub init {
     my $class = shift;
 
     my @Users  = ();
@@ -18,5 +18,9 @@ sub new {
     return bless $closure, $class;
 }
 
+sub new {
+    my $self = shift;
+    
+}
 
 1;
