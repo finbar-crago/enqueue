@@ -115,8 +115,8 @@ sub push {
 sub pull {
     my $this = shift;
     my ($id) = @_;
-    my $key =  %${$this->_db}->{'key'};
-    %${$this->_data}->{$key}->{'value'} = $id;
+    my $key =  ${$this->_db}->{'key'};
+    ${$this->_data}->{$key}->{'value'} = $id;
 
     # DB Stuff here...
 }
@@ -124,7 +124,7 @@ sub pull {
 sub data {
     my $this = shift;
     my $ret = {};
-    for (keys %${$this->_data}){
+    for (keys ${$this->_data}){
 	$ret->{$_} = $this->$_;
     }
     return $ret;
