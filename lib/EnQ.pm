@@ -2,8 +2,6 @@ package EnQ;
 use strict; 
 use warnings;
 
-use EnQ::Users;
-
 sub init {
     my $class = shift;
     my $self = {};
@@ -14,6 +12,7 @@ sub new {
     my $self = shift;
     my ($mod) = @_;
     return undef if $mod !~ /^[a-z:]+$/i;
+    eval "use EnQ::$mod;";
     my $object =  eval "EnQ::$mod->new();";
     ${$object->_parent} = $self;
 
