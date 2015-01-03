@@ -2,25 +2,22 @@ package EnQ;
 use strict; 
 use warnings;
 
-use parent qw(EnQ::Object);
+use EnQ::Users;
 
 sub init {
     my $class = shift;
-
-    my @Users  = ();
-    my @Queues = ();
-    my @Routes = ();
-
-
-    my $Object = { data => {} };
-    my $closure = EnQ::Object::_init($Object);
-
-    return bless $closure, $class;
+    my $self = {};
+    return bless $self, $class;
 }
 
 sub new {
     my $self = shift;
-    
+    my ($mod) = @_;
+    return undef if $mod !~ /^[a-z:]+$/i;
+    my $object =  eval "EnQ::$mod->new();";
+    ${$object->_parent} = $self;
+
+    return $object;
 }
 
 1;
