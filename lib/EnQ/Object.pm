@@ -26,7 +26,7 @@ sub _init {
     my $_closure = sub{
 	my $field = shift;
 	return $self->{'_error'} if $field eq '_error';
-	return $self->{$1} if $field =~ /^_(.+)/;
+	return \$self->{$1} if $field =~ /^_(.+)/;
 	$self->{'_error'} = undef;
 
 	if(!exists($self->{'data'}{$field})){
@@ -115,14 +115,16 @@ sub push {
 sub pull {
     my $this = shift;
     my ($id) = @_;
-    $this->_data->{$this->_db->{'key'}}->{'value'} = $id;
+    my $key =  %${$this->_db}->{'key'};
+    %${$this->_data}->{$key}->{'value'} = $id;
+
     # DB Stuff here...
 }
 
 sub data {
     my $this = shift;
     my $ret = {};
-    for (keys $this->_data){
+    for (keys %${$this->_data}){
 	$ret->{$_} = $this->$_;
     }
     return $ret;

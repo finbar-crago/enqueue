@@ -25,4 +25,6 @@ print $u->confSip();
 use Data::Dumper;
 my $p = EnQ::Users->new();
 $p->pull("test");
+print $p->uid;
+
 print Dumper $p->data();
