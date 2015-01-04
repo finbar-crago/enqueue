@@ -1,0 +1,2 @@
+language: perl
+script: prove t/t_*.pl
