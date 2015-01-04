@@ -6,10 +6,10 @@ use Test::Simple tests => 7;
 use EnQ;
 
 my $EnQ = EnQ->init();
-my $u = $EnQ->new('Users');
+my $u = $EnQ->new('User');
 
-ok(defined $u , "EnQ->new('Users') OK");
-ok($u->isa('EnQ::Users'), "isa == EnQ::Users" );
+ok(defined $u , "EnQ->new('User') OK");
+ok($u->isa('EnQ::User'), "isa == EnQ::User");
 
 ok($u->uid("finbar"), "set uid");
 ok($u->extn("12345"), "set extn");
