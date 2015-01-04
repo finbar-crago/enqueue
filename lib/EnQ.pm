@@ -2,9 +2,18 @@ package EnQ;
 use strict; 
 use warnings;
 
+use YAML;
+
 sub init {
-    my $class = shift;
-    my $self = {};
+    my ($class, $args) = @_; 
+    my $self = {
+	config => $args->{'config'} || undef,
+    };
+
+    if(defined $self->{'config'}){
+	my $conf = YAML::LoadFile($self->{'config'});
+	$self = {%$self, %$conf};
+    }
     return bless $self, $class;
 }
 
