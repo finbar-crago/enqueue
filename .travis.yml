@@ -1,4 +1,4 @@
 language: perl
 script:
-  - prove t/t_*.pl
+  - prove
   - ./bin/enqueue-www test ./www/t/*.t
