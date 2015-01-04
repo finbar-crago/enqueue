@@ -1,30 +1,20 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
-
 use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 
-use EnQ::Users
-$\ = "\n"; $, = "\t";
+use Test::Simple tests => 7;
+use EnQ;
 
-my $u = EnQ::Users->new(); 
-$u->uid("finbar") or print $u->is_error();
-$u->extn("12345") or print $u->is_error();
+my $EnQ = EnQ->init();
+my $u = $EnQ->new('Users');
 
-print "user:", $u->uid;
-print "extn:", $u->extn;
+ok(defined $u , "EnQ->new('Users') OK");
+ok($u->isa('EnQ::Users'), "isa == EnQ::Users" );
 
-$u->extn("ABCD") or print $u->is_error();
+ok($u->uid("finbar"), "set uid");
+ok($u->extn("12345"), "set extn");
 
-$u->badName("Hello") or print $u->is_error();
-print $u->badName;# or print $u->is_error();
+ok($u->uid eq 'finbar', "get uid");
+ok($u->extn eq '12345', "get extn");
 
-print $u->confSip();
-
-use Data::Dumper;
-my $p = EnQ::Users->new();
-$p->pull("test");
-print $p->uid;
-
-print Dumper $p->data();
+ok(!$u->extn("ABCD"), "set bad extn");
