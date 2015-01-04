@@ -9,4 +9,9 @@ BEGIN {
 }
 
 require Mojolicious::Commands;
-Mojolicious::Commands->start_app('EnQ::WWW', 'daemon', '-l', 'http://*:3000');
+
+if($#ARGV == -1){
+    Mojolicious::Commands->start_app('EnQ::WWW', 'daemon', '-l', 'http://*:3000');
+} else {
+    Mojolicious::Commands->start_app('EnQ::WWW');
+}
