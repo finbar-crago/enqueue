@@ -24,7 +24,7 @@ sub init {
     return bless $self, $class;
 }
 
-sub new {
+sub Obj {
     my $self = shift;
     my ($mod) = @_;
     return undef if $mod !~ /^[a-z:]+$/i;

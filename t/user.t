@@ -6,7 +6,7 @@ use Test::Simple tests => 7;
 use EnQ;
 
 my $EnQ = EnQ->init();
-my $u = $EnQ->new('User');
+my $u = $EnQ->Obj('User');
 
 ok(defined $u , "EnQ->new('User') OK");
 ok($u->isa('EnQ::User'), "isa == EnQ::User");
