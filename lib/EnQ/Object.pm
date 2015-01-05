@@ -40,7 +40,7 @@ Finbar Crago <finbar.crago@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2015 Finbar Crago
+Copyright (C) 2014-2015 Finbar Crago
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
