@@ -28,8 +28,8 @@ sub Obj {
     my $self = shift;
     my ($mod) = @_;
     return undef if $mod !~ /^[a-z:]+$/i;
-    eval "use EnQ::$mod;";
-    my $object =  eval "EnQ::$mod->new();";
+    eval "use EnQ::Obj::$mod;";
+    my $object =  eval "EnQ::Obj::$mod->new();";
     ${$object->_parent} = $self;
 
     return $object;

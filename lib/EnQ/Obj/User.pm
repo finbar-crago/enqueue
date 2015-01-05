@@ -1,4 +1,4 @@
-package EnQ::User;
+package EnQ::Obj::User;
 use strict;
 use warnings;
 

@@ -9,7 +9,7 @@ my $EnQ = EnQ->new();
 my $u = $EnQ->Obj('User');
 
 ok(defined $u , "EnQ->new('User') OK");
-ok($u->isa('EnQ::User'), "isa == EnQ::User");
+ok($u->isa('EnQ::Obj::User'), "isa == EnQ::Obj::User");
 
 ok($u->uid("finbar"), "set uid");
 ok($u->extn("12345"), "set extn");
