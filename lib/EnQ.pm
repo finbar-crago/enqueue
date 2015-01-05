@@ -5,7 +5,7 @@ use warnings;
 use EnQ::DBA;
 use YAML;
 
-sub init {
+sub new {
     my ($class, $args) = @_; 
     my $self = {
 	config => $args->{'config'} || undef,

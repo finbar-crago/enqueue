@@ -5,7 +5,7 @@ BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 use Test::Simple tests => 3;
 use EnQ;
 
-my $EnQ = EnQ->init({config => "$FindBin::Bin/../misc/sample_config.yml"});
+my $EnQ = EnQ->new({config => "$FindBin::Bin/../misc/sample_config.yml"});
 
 ok(defined $EnQ , "EnQ->init() OK");
 ok($EnQ->isa('EnQ'), "isa == EnQ");
