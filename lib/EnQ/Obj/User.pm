@@ -1,10 +1,10 @@
-package EnQ::User;
+package EnQ::Obj::User;
 use strict;
 use warnings;
 
 use parent qw(EnQ::Object);
 
-my $Object = {
+our $Object = {
     data => { },
     db => {
 	key   => 'uid',
@@ -35,5 +35,7 @@ sub confSip {
 
     return $ret;
 }
+
+sub _load { }
 
 1;
