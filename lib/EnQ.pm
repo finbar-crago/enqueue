@@ -17,10 +17,8 @@ sub init {
     }
 
     if(defined $self->{'db'}){
-	$self->{'db'}{'DBA'} = EnQ::DBA->new({ conn => $self->{'db'}{'conn'},
-					       user => $self->{'db'}{'user'},
-					       pass => $self->{'db'}{'pass'}});
-	$self->{'db'}{'DBA'}->connect();
+	$self->{'_db'} = EnQ::DBA->new($self->{'db'});
+	$self->{'_db'}->connect();
     }
 
     return bless $self, $class;

@@ -108,8 +108,10 @@ sub add {
 }
 
 sub push {
-    my $this = shift;
-    # DB Stuff here...
+    my $self = shift;
+    my $key = ${$self->_db}->{'key'};
+
+    $self->_parent->{'_db'}->put($key);
 }
 
 sub pull {
