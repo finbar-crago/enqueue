@@ -9,6 +9,8 @@ my $Object = {
     db => {
 	key   => 'uid',
 	table => 'users',
+	setup  => 'CREATE TABLE users '.
+	    '(uid TEXT PRIMARY KEY, name TEXT, extn TEXT, sipPass TEXT, wwwPass TEXT)',
     },
 };
 
