@@ -4,7 +4,7 @@ use warnings;
 
 use parent qw(EnQ::Object);
 
-our $Object = {
+my $Object = {
     data => { },
     db => {
 	key   => 'uid',
@@ -36,6 +36,9 @@ sub confSip {
     return $ret;
 }
 
-sub _load { }
+sub _load {
+    my $parent = shift;
+    return $Object;
+}
 
 1;
