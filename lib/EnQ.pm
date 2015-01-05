@@ -2,6 +2,7 @@ package EnQ;
 use strict; 
 use warnings;
 
+use EnQ::DBA;
 use YAML;
 
 sub init {
@@ -14,6 +15,14 @@ sub init {
 	my $conf = YAML::LoadFile($self->{'config'});
 	$self = {%$self, %$conf};
     }
+
+    if(defined $self->{'db'}){
+	$self->{'db'}{'DBA'} = EnQ::DBA->new({ conn => $self->{'db'}{'conn'},
+					       user => $self->{'db'}{'user'},
+					       pass => $self->{'db'}{'pass'}});
+	$self->{'db'}{'DBA'}->connect();
+    }
+
     return bless $self, $class;
 }
 
