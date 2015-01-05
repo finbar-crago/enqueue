@@ -2,6 +2,61 @@ package EnQ::Object;
 use strict;
 use warnings;
 
+=head1 NAME
+
+EnQ::Object - The Enqueue PBX Core Object Library
+
+=head1 SYNOPSIS
+
+  package EnQ::Obj::User
+  use parent qw(EnQ::Object);
+
+  sub new {
+     my $class = shift;
+     EnQ::Object::add($Object, 'uid');
+     EnQ::Object::add($Object, 'name');
+     EnQ::Object::add($Object, 'extn',
+		      {mode => 'REGEX', regex => '^[0-9]+$'});
+
+     my $closure = EnQ::Object::_init($Object);
+     return bless $closure, $class;
+  }
+
+  my $Q = EnQ->new({config => 'my_config.yml'});
+  my $U = $Q->Obj('User');
+
+  $U->pull('user_id');
+  print $U->name;
+  $U->extn("1234") or print $u->is_error();
+  $U->push();
+
+  $dump_all = $U->data();
+  $bypass_closure = ${$U->_db}->{'key'};
+  ${$U->_parent} = $more_bypassing;
+
+=head1 AUTHOR
+
+Finbar Crago <finbar.crago@gmail.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2015 Finbar Crago
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see L<http://www.gnu.org/licenses/>.
+
+=cut
+
 use constant {
     READ    => 1,
     WRITE   => 2,
