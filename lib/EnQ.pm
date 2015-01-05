@@ -29,17 +29,17 @@ sub new {
 sub Obj {
     my $self = shift;
     my ($mod) = @_;
-    return undef if $mod !~ /^[a-z:]+$/i;
-    my $object =  eval "EnQ::Obj::$mod->new();";
-    ${$object->_parent} = $self;
-
-    return $object;
+    return undef if $mod !~ /^[a-z]+$/i;
+    my $o = eval "EnQ::Obj::$mod->new();";
+    ${$o->_parent} = $self;
+    return $o;
 }
 
 sub ObjInit {
     my $self = shift;
-    my $path = $INC{"EnQ.pm"} =~ s|(.+/EnQ).pm|$1/Obj/*.pm|r;
-    require $_ for (glob $path);
+    for (glob $INC{"EnQ.pm"} =~ s|(.+/EnQ).pm|$1/Obj/*.pm|r){
+	require; &{$EnQ::Obj::{s|.+/([^.]+)\.pm|$1::|r}{'_load'}}(\$self);
+    }
 }
 
 1;
