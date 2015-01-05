@@ -21,18 +21,25 @@ sub new {
 	$self->{'_db'}->connect();
     }
 
-    return bless $self, $class;
+    my $this = bless($self, $class);
+    $this->ObjInit();
+    return $this;
 }
 
 sub Obj {
     my $self = shift;
     my ($mod) = @_;
     return undef if $mod !~ /^[a-z:]+$/i;
-    eval "use EnQ::Obj::$mod;";
     my $object =  eval "EnQ::Obj::$mod->new();";
     ${$object->_parent} = $self;
 
     return $object;
+}
+
+sub ObjInit {
+    my $self = shift;
+    my $path = $INC{"EnQ.pm"} =~ s|(.+/EnQ).pm|$1/Obj/*.pm|r;
+    require $_ for (glob $path);
 }
 
 1;
