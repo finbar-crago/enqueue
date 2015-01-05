@@ -1,10 +1,13 @@
 package EnQ::WWW;
 use Mojo::Base 'Mojolicious';
-
+use EnQ;
 
 sub startup {
   my $self = shift;
   my $r = $self->routes;
+
+  my $EnQ = EnQ::->new();
+  $self->helper(EnQ => sub { return $EnQ });
 
   $r->get('/')->to('Dashboard#main');
 

@@ -1,23 +1,22 @@
 package EnQ::WWW::Users;
 use Mojo::Base 'Mojolicious::Controller';
-use EnQ::Users;
 
 sub info {
   my $self = shift;
-  my $u = EnQ::Users->new();
+  my $u = $self->EnQ->Obj('User');
   $u->pull($self->param('uid'));
   $self->render(json => $u->data);
 }
 
 sub add {
   my $self = shift;
-  my $u = EnQ::Users->new();
+  my $u = $self->EnQ->Obj('User');
 
-  $u->name($self->param('uid'));
+  $u->uid($self->param('uid'));
   $u->name($self->param('name'));
-  $u->name($self->param('extn'));
-  $u->name($self->param('sipPass'));
-  $u->name($self->param('wwwPass'));
+  $u->extn($self->param('extn'));
+  $u->sipPass($self->param('sipPass'));
+  $u->wwwPass($self->param('wwwPass'));
 
   $u->push();
 
