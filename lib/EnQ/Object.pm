@@ -164,16 +164,14 @@ sub add {
 
 sub push {
     my $self = shift;
-    my $key = ${$self->_db}->{'key'};
-
-    $self->_parent->{'_db'}->put($key);
+    $self->_parent->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->data);
 }
 
 sub pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
-    my $data = $self->_parent->{'_db'}->get(${$self->_db}->{'table'});
+    my $data = $self->_parent->{'_db'}->get(${$self->_db}->{'table'}, $key, $id);
     $self->$_($data->{$_}) for (keys $data);
     ${$self->_data}->{$key}->{'value'} = $id;
 }

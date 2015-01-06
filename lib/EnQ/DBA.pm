@@ -45,7 +45,22 @@ sub get {
     return $sth->fetchrow_hashref;
 }
 
-sub put { }
+sub put {
+    my $self = shift;
+    my ($table, $key, $data) = @_;
+
+    my $f = join(',',   (keys $data));
+    my $d = join(',', (values $data));
+
+    my $Q = $SQL->{$self->{type}}->{PUT};
+    $Q =~ s|<TABLE>|$table|g;
+    $Q =~ s|<KEY>|$key|g;
+    $Q =~ s|<FIELDS>|$f|g;
+    $Q =~ s|<DATA>|$d|g;
+
+    my $sth = $self->{'dbh'}->do($Q);
+}
+
 sub del { }
 
 sub _db_init {
