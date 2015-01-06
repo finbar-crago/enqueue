@@ -18,11 +18,8 @@ my $Object = {
     },
 };
 
-use Data::Dumper;
-
 sub new {
     my $class = shift;
-    print Dumper $Object;
     my $closure = EnQ::Object::_init($Object);
     return bless $closure, $class;
 }
