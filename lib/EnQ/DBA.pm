@@ -6,7 +6,7 @@ use DBI;
 
 my $SQL = {
     SQLite => {
-	GET => 'SELECT * FROM <TABLE> WHERE <KEY> = "<ID>"',
+	GET => 'SELECT * FROM <TABLE> WHERE <KEY> = ?',
 	PUT => 'INSERT OR REPLACE INTO <TABLE> (<FIELDS>) VALUES (<DATA>);',
 	DEL => 'DELETE FROM <TABLE> WHERE <KEY> = "<ID>"',
 	LIST_TABLES => 'SELECT * FROM sqlite_master WHERE type = "table";'
@@ -42,6 +42,7 @@ sub get {
 
     my $sth = $self->{'dbh'}->prepare($Q);
     $sth->execute($id);
+
     return $sth->fetchrow_hashref;
 }
 

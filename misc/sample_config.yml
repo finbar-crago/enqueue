@@ -1,5 +1,5 @@
 db:
-  type: SQLite
+  type: "SQLite"
   conn: "dbi:SQLite:dbname=/tmp/enq_test_db"
   user: ""
   pass: ""
