@@ -135,13 +135,6 @@ sub _init {
     return $_closure;
 }
 
-sub new {
-    my $class = shift;
-    my $self = {};
-    my $closure = _init($self);
-    return bless $closure, $class;
-}
-
 sub add {
     my $obj = shift;
     my ($name, $args) = @_;

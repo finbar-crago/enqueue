@@ -9,8 +9,7 @@ my $Object = {
     db => {
 	key   => 'uid',
 	table => 'users',
-	setup  => 'CREATE TABLE users '.
-	    '(uid TEXT PRIMARY KEY, name TEXT, extn TEXT, sipPass TEXT, wwwPass TEXT)',
+	setup => 'CREATE TABLE users (uid TEXT PRIMARY KEY, name TEXT, extn TEXT, sipPass TEXT, wwwPass TEXT)',
     },
 };
 
@@ -24,18 +23,6 @@ sub new {
 
     my $closure = EnQ::Object::_init($Object);
     return bless $closure, $class;
-}
-
-sub confSip {
-    my $this = shift;
-    my $ret  =
-	sprintf("[%d]\n", $this->extn).
-	"type=endpoint\n".
-	sprintf("context=%s\n", '???').
-	sprintf("auth=%d\n", $this->extn).
-	sprintf("aor=%d\n", $this->extn);
-
-    return $ret;
 }
 
 sub _load {

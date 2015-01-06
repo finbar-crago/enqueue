@@ -90,8 +90,8 @@ sub put {
     my $self = shift;
     my ($table, $key, $data) = @_;
 
-    my $f = join(',',   (keys $data));
-    my $d = join(',', ('?')x(0+keys($data) ));
+    my $f = join(',', (keys $data));
+    my $d = join(',', ('?')x(0+keys($data)));
 
     my $Q = $SQL->{$self->{type}}->{PUT};
     $Q =~ s|<TABLE>|$table|g;
