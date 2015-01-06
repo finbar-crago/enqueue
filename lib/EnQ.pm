@@ -48,19 +48,21 @@ sub new {
 	config => $args->{'config'} || undef,
     };
 
+    my $this = bless($self, $class);
+
     if(defined $self->{'config'}){
 	my $conf = YAML::LoadFile($self->{'config'});
 	$self = {%$self, %$conf};
     }
 
+    $this->ObjInit();
+
     if(defined $self->{'db'}){
 	$self->{'_db'} = EnQ::DBA->new($self->{'db'});
 	$self->{'_db'}->connect();
+	$self->{'_db'}->_db_init($self->{'Obj'}) ;
     }
 
-    my $this = bless($self, $class);
-    $this->ObjInit();
-    $self->{'_db'}->_db_init($self->{'Obj'});
     return $this;
 }
 
