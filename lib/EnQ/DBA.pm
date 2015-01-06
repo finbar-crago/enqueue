@@ -34,9 +34,13 @@ sub connect {
 }
 
 sub get {
-    my ($self, $table, $key, $id) = @_;
+    my $self = shift;
+    my ($table, $key, $id) = @_;
+    my $Q = $SQL->{$self->{type}}->{GET};
+    $Q =~ s|<TABLE>|$table|g;
+    $Q =~ s|<KEY>|$key|g;
 
-    my $sth = $self->{'dbh'}->prepare($SQL->{$self->{type}}->{GET});
+    my $sth = $self->{'dbh'}->prepare($Q);
     $sth->execute($id);
     return $sth->fetchrow_hashref;
 }

@@ -170,12 +170,12 @@ sub push {
 }
 
 sub pull {
-    my $this = shift;
+    my $self = shift;
     my ($id) = @_;
-    my $key =  ${$this->_db}->{'key'};
-    ${$this->_data}->{$key}->{'value'} = $id;
-
-    # DB Stuff here...
+    my $key = ${$self->_db}->{'key'};
+    my $data = $self->_parent->{'_db'}->get(${$self->_db}->{'table'});
+    $self->$_($data->{$_}) for (keys $data);
+    ${$self->_data}->{$key}->{'value'} = $id;
 }
 
 sub data {
