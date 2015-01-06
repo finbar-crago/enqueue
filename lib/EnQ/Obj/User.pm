@@ -4,7 +4,7 @@ use warnings;
 
 use parent qw(EnQ::Object);
 
-my $Object = {
+our $Object = {
     data => {
 	'uid'  => EnQ::Object::Field(),
 	'name' => EnQ::Object::Field(),
@@ -18,11 +18,11 @@ my $Object = {
     },
 };
 
-sub new {
-    my $class = shift;
-    my $closure = EnQ::Object::_init($Object);
-    return bless $closure, $class;
-}
+#sub new {
+#    my $class = shift;
+#    my $closure = EnQ::Object::_init($Object);
+#    return bless $closure, $class;
+#}
 
 sub _load {
     my $parent = shift;

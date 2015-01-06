@@ -65,6 +65,12 @@ use constant {
     CB      => 16
 };
 
+sub new {
+    my $class = shift;
+    my $closure = EnQ::Object::_init(${$EnQ::Obj::{$class=~s|EnQ::Obj::([^:]+)|$1::|r}{'Object'}});
+    return bless $closure, $class;
+}
+
 sub _init {
     my $mod  = shift;
     my $self =
