@@ -135,14 +135,12 @@ sub _init {
     return $_closure;
 }
 
-sub add {
-    my $obj = shift;
-    my ($name, $args) = @_;
-    $obj->{'data'}{$name} = $args;
-    $obj->{'data'}{$name}{'mode'}|='';
+sub Field {
+    my ($obj) = @_;
 
     my $i = 0;
-    for(split /\|/, $obj->{'data'}{$name}{'mode'}){
+    $obj->{'mode'}|='';
+    for(split /\|/, $obj->{'mode'}){
 	if    ($_ eq 'READ'   ){ $i|= 1  }
 	elsif ($_ eq 'WRITE'  ){ $i|= 2  }
 	elsif ($_ eq 'REQURED'){ $i|= 4  }
@@ -152,7 +150,8 @@ sub add {
     if(!($i & (READ|WRITE))){
 	$i|=(READ|WRITE);
     }
-    $obj->{'data'}{$name}{'mode'} = $i;
+    $obj->{'mode'} = $i;
+    return $obj;
 }
 
 sub push {

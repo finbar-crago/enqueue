@@ -5,6 +5,12 @@ use warnings;
 use parent qw(EnQ::Object);
 
 my $Object = {
+    data => {
+	'uid'  => EnQ::Object::Field(),
+	'name' => EnQ::Object::Field(),
+	'extn' => EnQ::Object::Field({mode => 'REGEX', regex => '^[0-9]+$'}),
+	'pass' => EnQ::Object::Field(),
+    },
     db => {
 	key   => 'uid',
 	table => 'users',
@@ -12,14 +18,11 @@ my $Object = {
     },
 };
 
+use Data::Dumper;
+
 sub new {
     my $class = shift;
-    EnQ::Object::add($Object, 'uid');
-    EnQ::Object::add($Object, 'name');
-    EnQ::Object::add($Object, 'extn', {mode => 'REGEX', regex => '^[0-9]+$'});
-    EnQ::Object::add($Object, 'sipPass');
-    EnQ::Object::add($Object, 'wwwPass');
-
+    print Dumper $Object;
     my $closure = EnQ::Object::_init($Object);
     return bless $closure, $class;
 }
