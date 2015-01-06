@@ -15,8 +15,7 @@ sub add {
   $u->uid($self->param('uid'));
   $u->name($self->param('name'));
   $u->extn($self->param('extn'));
-  $u->sipPass($self->param('sipPass'));
-  $u->wwwPass($self->param('wwwPass'));
+  $u->pass($self->param('pass'));
 
   $u->push();
 
