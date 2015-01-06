@@ -5,7 +5,6 @@ use warnings;
 use parent qw(EnQ::Object);
 
 my $Object = {
-    data => { },
     db => {
 	key   => 'uid',
 	table => 'users',
