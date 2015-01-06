@@ -61,7 +61,17 @@ sub put {
     my $sth = $self->{'dbh'}->do($Q);
 }
 
-sub del { }
+sub del {
+    my $self = shift;
+    my ($table, $key, $data) = @_;
+
+    my $Q = $SQL->{$self->{type}}->{DEL};
+    $Q =~ s|<TABLE>|$table|g;
+    $Q =~ s|<KEY>|$key|g;
+    $Q =~ s|<FIELDS>|$f|g;
+
+    my $sth = $self->{'dbh'}->do($Q);
+}
 
 sub _db_init {
     my $self = shift;
