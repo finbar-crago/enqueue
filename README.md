@@ -1,11 +1,11 @@
 Enqueue PBX [![Build Status](https://travis-ci.org/finbar-crago/enqueue.svg?branch=master)](https://travis-ci.org/finbar-crago/enqueue)
 =======
 
-## NAME
+### NAME
 
 EnQ - The Enqueue PBX Libraries
 
-## SYNOPSIS
+### SYNOPSIS
 
     use EnQ;
 
@@ -15,11 +15,11 @@ EnQ - The Enqueue PBX Libraries
     $U->pull('user_id');
     print $U->name;
 
-## AUTHOR
+### AUTHOR
 
 Finbar Crago <finbar.crago@gmail.com>
 
-## COPYRIGHT AND LICENSE
+### COPYRIGHT AND LICENSE
 
 Copyright (C) 2014-2015 Finbar Crago
 
