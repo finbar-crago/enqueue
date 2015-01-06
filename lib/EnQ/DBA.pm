@@ -9,6 +9,7 @@ my $SQL = {
 	GET => 'SELECT * FROM <TABLE> WHERE <KEY> = "<ID>"',
 	PUT => 'INSERT OR REPLACE INTO <TABLE> (<FIELDS>) VALUES (<DATA>);',
 	DEL => 'DELETE FROM <TABLE> WHERE <KEY> = "<ID>"',
+	LIST_TABLES => 'SELECT * FROM sqlite_master WHERE type = "table";'
     },
 };
 
@@ -42,5 +43,20 @@ sub get {
 
 sub put { }
 sub del { }
+
+sub _db_init {
+    my $self = shift;
+    my ($ObjList) = @_;
+
+    my $sth = $self->{'dbh'}->prepare($SQL->{$self->{type}}->{LIST_TABLES});
+    $sth->execute();
+    my $tables = $sth->fetchall_hashref('name');
+
+    for (keys $ObjList){
+	if(!defined $tables->{$ObjList->{$_}->{db}{table}}){
+	    $self->{'dbh'}->do($ObjList->{User}->{db}{setup});
+	}
+    }
+}
 
 1;

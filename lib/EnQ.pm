@@ -60,6 +60,7 @@ sub new {
 
     my $this = bless($self, $class);
     $this->ObjInit();
+    $self->{'_db'}->_db_init($self->{'Obj'});
     return $this;
 }
 
