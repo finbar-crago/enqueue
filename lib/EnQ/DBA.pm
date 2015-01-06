@@ -68,7 +68,6 @@ sub del {
     my $Q = $SQL->{$self->{type}}->{DEL};
     $Q =~ s|<TABLE>|$table|g;
     $Q =~ s|<KEY>|$key|g;
-    $Q =~ s|<FIELDS>|$f|g;
 
     my $sth = $self->{'dbh'}->do($Q);
 }
