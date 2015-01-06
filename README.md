@@ -18,10 +18,10 @@ print $U->name;
 ```
 ### AUTHOR
 
-Finbar Crago <finbar.crago@gmail.com>
+Finbar Crago <<finbar.crago@gmail.com>>
 
 ### COPYRIGHT AND LICENSE
-
+```
 Copyright (C) 2014-2015 Finbar Crago
 
 This program is free software; you can redistribute it and/or modify
@@ -35,4 +35,5 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
+along with this program.  If not, see http://www.gnu.org/licenses/
+```
