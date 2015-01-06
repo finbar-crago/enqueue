@@ -18,12 +18,6 @@ our $Object = {
     },
 };
 
-#sub new {
-#    my $class = shift;
-#    my $closure = EnQ::Object::_init($Object);
-#    return bless $closure, $class;
-#}
-
 sub _load {
     my $parent = shift;
     return $Object;
