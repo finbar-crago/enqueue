@@ -8,7 +8,7 @@ sub startup {
   my $self = shift;
   my $r = $self->routes;
 
-  my $EnQ = EnQ::->new({config => "$FindBin::Bin/../misc/sample_config.yml"});
+  my $EnQ = EnQ::->new({config => $FindBin::Bin =~ s|(.+/enqueue).+|$1/misc/sample_config.yml|r});
   $self->helper(EnQ => sub { return $EnQ });
 
   $r->get('/')->to('Dashboard#main');
