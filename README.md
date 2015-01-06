@@ -7,14 +7,15 @@ EnQ - The Enqueue PBX Libraries
 
 ### SYNOPSIS
 
-    use EnQ;
+```perl
+use EnQ;
 
-    my $Q = EnQ->new({config => 'my_config.yml'});
+my $Q = EnQ->new({config => 'my_config.yml'});
 
-    my $U = $Q->Obj('User');
-    $U->pull('user_id');
-    print $U->name;
-
+my $U = $Q->Obj('User');
+$U->pull('user_id');
+print $U->name;
+```
 ### AUTHOR
 
 Finbar Crago <finbar.crago@gmail.com>
