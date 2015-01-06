@@ -99,8 +99,6 @@ sub put {
     $Q =~ s|<FIELDS>|$f|g;
     $Q =~ s|<DATA>|$d|g;
 
-    print "\n\n=== $Q \n\n\n";
-
     my $sth = $self->{'dbh'}->prepare($Q);
     $sth->execute((values $data));
 }
