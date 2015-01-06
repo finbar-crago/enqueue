@@ -91,7 +91,7 @@ sub put {
     my ($table, $key, $data) = @_;
 
     my $f = join(',',   (keys $data));
-    my $d = join(',', (values $data));
+    my $d = join(',', ('?')x(0+keys($data) ));
 
     my $Q = $SQL->{$self->{type}}->{PUT};
     $Q =~ s|<TABLE>|$table|g;
@@ -99,7 +99,10 @@ sub put {
     $Q =~ s|<FIELDS>|$f|g;
     $Q =~ s|<DATA>|$d|g;
 
-    my $sth = $self->{'dbh'}->do($Q);
+    print "\n\n=== $Q \n\n\n";
+
+    my $sth = $self->{'dbh'}->prepare($Q);
+    $sth->execute((values $data));
 }
 
 sub del {

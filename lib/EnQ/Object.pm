@@ -164,7 +164,7 @@ sub add {
 
 sub push {
     my $self = shift;
-    $self->_parent->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->data);
+    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->data);
 }
 
 sub pull {
