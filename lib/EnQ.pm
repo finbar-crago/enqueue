@@ -48,20 +48,13 @@ sub new {
 	config => $args->{'config'} || undef,
     };
 
-    my $this = bless($self, $class);
-
     if(defined $self->{'config'}){
 	my $conf = YAML::LoadFile($self->{'config'});
 	$self = {%$self, %$conf};
     }
 
+    my $this = bless($self, $class);
     $this->ObjInit();
-
-    if(defined $self->{'db'}){
-	$self->{'_db'} = EnQ::DBA->new($self->{'db'});
-	$self->{'_db'}->connect();
-	$self->{'_db'}->_db_init($self->{'Obj'}) ;
-    }
 
     return $this;
 }
@@ -80,6 +73,12 @@ sub ObjInit {
     for (glob $INC{"EnQ.pm"} =~ s|(.+/EnQ).pm|$1/Obj/*.pm|r){
 	require;
 	$self->{'Obj'}{s|.+/([^.]+)\.pm|$1|r} = &{$EnQ::Obj::{s|.+/([^.]+)\.pm|$1::|r}{'_load'}}(\$self);
+    }
+
+    if(defined $self->{'db'}){
+	$self->{'_db'} = EnQ::DBA->new($self->{'db'});
+	$self->{'_db'}->connect();
+	$self->{'_db'}->_db_init($self->{'Obj'}) ;
     }
 }
 
