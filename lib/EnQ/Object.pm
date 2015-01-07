@@ -160,22 +160,17 @@ sub _init {
 
 		if($self->{'data'}{$field}{'mode'} & REGEX){
 		    my $regex = $self->{'data'}{$field}{'regex'};
-		    if($value =~ m/$regex/){
-			$self->{'data'}{$field}{'value'} = $value;
-			return $value;
-		    } else {
+		    if($value !~ m/$regex/){
 			$self->{'_error'} = 'faild regex';
 			return undef;
 		    }
 		}
 
 		if($self->{'data'}{$field}{'mode'} & CB){
-		    my $r = &{ $self->{'data'}{$field}{'cb'} }($value);
-		    if($r){
-			$self->{'data'}{$field}{'value'} = $r;
-			return $r;
-		    } else {
+		    my $value = &{$self->{'data'}{$field}{'cb'}}($value);
+		    if(!$value){
 			$self->{'_error'} = 'faild callback';
+			return undef;
 		    }
 		}
 
