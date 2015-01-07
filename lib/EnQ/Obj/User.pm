@@ -32,7 +32,7 @@ sub hashPass {
     $c->salt($salt);
     $c->add($pass);
 
-    return sprintf('%x%x::%s', unpack('qq',$c->salt), $c->hexdigest);
+    return sprintf('%016x%016x::%s', unpack('qq',$c->salt), $c->hexdigest);
 }
 
 sub _load {
