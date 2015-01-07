@@ -112,11 +112,13 @@ sub Pull {
 }
 
 sub Data {
-    my $this = shift;
-    my $ret = {};
-    for (keys ${$this->_data}){
-	$ret->{$_} = $this->$_;
-    }
+    my $self = shift;
+    my ($dat)= shift || {};
+    my $ret  = {};
+
+    $self->$_($dat->{$_}) for (keys $dat);
+    $ret->{$_} = $self->$_ for (keys ${$self->_data});
+
     return $ret;
 }
 
