@@ -11,18 +11,25 @@ EnQ::Object - The Enqueue PBX Core Object Library
   package EnQ::Obj::User
   use parent qw(EnQ::Object);
 
-  sub new {
-     my $class = shift;
-     EnQ::Object::add($Object, 'uid');
-     EnQ::Object::add($Object, 'name');
-     EnQ::Object::add($Object, 'extn',
-		      {mode => 'REGEX', regex => '^[0-9]+$'});
+  our $Object = {
+    data => {
+        'uid'  => EnQ::Object::Field(),
+        'name' => EnQ::Object::Field(),
+        'extn' => EnQ::Object::Field({mode => 'REGEX', regex => '^[0-9]+$'}),
+        'pass' => EnQ::Object::Field(),
+    },
+    db => {
+        key   => 'uid',
+        table => 'users',
+        setup => 'CREATE TABLE users (uid TEXT PRIMARY KEY, name TEXT, extn TEXT, pass TEXT)',
+    },
+  };
 
-     my $closure = EnQ::Object::_init($Object);
-     return bless $closure, $class;
-  }
+  1;
 
-  my $Q = EnQ->new({config => 'my_config.yml'});
+  -----
+
+  my $Q = EnQ->new({config_file => 'my_config.yml'});
   my $U = $Q->Obj('User');
 
   $U->Pull('user_id');
