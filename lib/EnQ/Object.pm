@@ -158,7 +158,7 @@ sub _init {
 	if(@_){ #write var
 
 	    if($self->{'data'}{$field} && $self->{'data'}{$field}{'mode'} & WRITE){
-		my $value = shift;
+		my $value = shift || '';
 
 		if($self->{'data'}{$field}{'mode'} & REGEX){
 		    my $regex = $self->{'data'}{$field}{'regex'};
