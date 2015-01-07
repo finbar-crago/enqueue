@@ -13,7 +13,7 @@ use EnQ;
 my $Q = EnQ->new({config => 'my_config.yml'});
 
 my $U = $Q->Obj('User');
-$U->pull('user_id');
+$U->Pull('user_id');
 print $U->name;
 ```
 ### AUTHOR
