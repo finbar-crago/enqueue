@@ -136,7 +136,7 @@ sub _init {
 	parent => undef,
 	type   => undef,
 	data   => {},
-	def    => $mod->{'data'} || undef,
+	def    => $mod->{'def'} || undef,
 	db     => $mod->{'db'}   || undef,
 	_error => undef,
     };

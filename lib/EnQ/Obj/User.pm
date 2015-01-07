@@ -7,7 +7,7 @@ use Digest;
 use parent qw(EnQ::Object);
 
 our $Object = {
-    data => {
+    def => {
 	'uid'  => EnQ::Object::Field(),
 	'name' => EnQ::Object::Field(),
 	'extn' => EnQ::Object::Field('REGEX',{regex =>'^[0-9]+$'}),
