@@ -108,18 +108,15 @@ sub Pull {
     my $key = ${$self->_db}->{'key'};
     my $data = ${$self->_parent}->{'DBA'}->get(${$self->_db}->{'table'}, $key, $id);
     if(defined $data){ $self->$_($data->{$_}) for (keys $data); }
-    ${$self->_data}->{$key}->{'value'} = $id;
+    ${$self->_data}->{$key} = $id;
 }
 
 sub Data {
     my $self = shift;
     my ($dat)= shift || {};
-    my $ret  = {};
-
     $self->$_($dat->{$_}) for (keys $dat);
-    $ret->{$_} = $self->$_ for (keys ${$self->_data});
 
-    return $ret;
+    return ${$self->_data};
 }
 
 sub is_error {
