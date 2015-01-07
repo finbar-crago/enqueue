@@ -107,7 +107,7 @@ sub Pull {
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
     my $data = ${$self->_parent}->{'DBA'}->get(${$self->_db}->{'table'}, $key, $id);
-    if(defined $data){ $self->$_($data->{$_}) for (keys $data); }
+    if(defined $data){ ${$self->_data}->{$_} = $data->{$_} for (keys $data); }
     ${$self->_data}->{$key} = $id;
 }
 
