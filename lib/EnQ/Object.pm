@@ -92,14 +92,14 @@ sub Field {
 
 sub Push {
     my $self = shift;
-    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
+    ${$self->_parent}->{'DBA'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
 }
 
 sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
-    my $data = ${$self->_parent}->{'_db'}->get(${$self->_db}->{'table'}, $key, $id);
+    my $data = ${$self->_parent}->{'DBA'}->get(${$self->_db}->{'table'}, $key, $id);
     if(defined $data){ $self->$_($data->{$_}) for (keys $data); }
     ${$self->_data}->{$key}->{'value'} = $id;
 }

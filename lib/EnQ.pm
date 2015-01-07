@@ -45,12 +45,14 @@ use YAML;
 sub new {
     my ($class, $args) = @_; 
     my $self = {
-	config => $args->{'config'} || undef,
+	config => {
+	    config_file => $args->{'config_file'} || undef,
+	},
     };
 
-    if(defined $self->{'config'}){
-	my $conf = YAML::LoadFile($self->{'config'});
-	$self = {%$self, %$conf};
+    if(defined $self->{'config'}{'config_file'}){
+	my $conf = YAML::LoadFile($self->{'config'}{'config_file'});
+	$self->{'config'} = {%{$self->{'config'}}, %$conf};
     }
 
     my $this = bless($self, $class);
@@ -79,10 +81,10 @@ sub _init {
 	}
     }
 
-    if(defined $self->{'db'}){
-	$self->{'_db'} = EnQ::DBA->new($self->{'db'});
-	$self->{'_db'}->connect();
-	$self->{'_db'}->_db_init($self->{'Obj'}) ;
+    if(defined $self->{'config'}{'db'}){
+	$self->{'DBA'} = EnQ::DBA->new($self->{'config'}{'db'});
+	$self->{'DBA'}->connect();
+	$self->{'DBA'}->_db_init($self->{'Obj'}) ;
     }
 }
 
