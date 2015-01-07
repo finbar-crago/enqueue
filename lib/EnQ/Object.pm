@@ -167,7 +167,7 @@ sub _init {
 		}
 
 		if($self->{'data'}{$field}{'mode'} & CB){
-		    my $value = &{$self->{'data'}{$field}{'cb'}}($value);
+		    $value = &{$self->{'data'}{$field}{'cb'}}($value);
 		    if(!$value){
 			$self->{'_error'} = 'faild callback';
 			return undef;
