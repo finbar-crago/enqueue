@@ -8,7 +8,7 @@ our $Object = {
     data => {
 	'uid'  => EnQ::Object::Field(),
 	'name' => EnQ::Object::Field(),
-	'extn' => EnQ::Object::Field({mode => 'REGEX', regex => '^[0-9]+$'}),
+	'extn' => EnQ::Object::Field('REGEX',{regex => '^[0-9]+$'}),
 	'pass' => EnQ::Object::Field(),
     },
     db => {

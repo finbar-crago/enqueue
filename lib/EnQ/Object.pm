@@ -15,7 +15,7 @@ EnQ::Object - The Enqueue PBX Core Object Library
     data => {
         'uid'  => EnQ::Object::Field(),
         'name' => EnQ::Object::Field(),
-        'extn' => EnQ::Object::Field({mode => 'REGEX', regex => '^[0-9]+$'}),
+        'extn' => EnQ::Object::Field('REGEX',{regex =>'^[0-9]+$'}),
         'pass' => EnQ::Object::Field(),
     },
     db => {
@@ -79,11 +79,11 @@ sub new {
 }
 
 sub Field {
-    my ($obj) = @_;
+    my ($mode, $obj) = @_;
 
     my $i = 0;
-    $obj->{'mode'}|='';
-    for(split /\|/, $obj->{'mode'}){
+    $mode|='';
+    for(split /\|/, $mode){
 	if    ($_ eq 'READ'   ){ $i|= 1  }
 	elsif ($_ eq 'WRITE'  ){ $i|= 2  }
 	elsif ($_ eq 'REQURED'){ $i|= 4  }
