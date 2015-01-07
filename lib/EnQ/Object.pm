@@ -16,7 +16,7 @@ EnQ::Object - The Enqueue PBX Core Object Library
         'uid'  => EnQ::Object::Field(),
         'name' => EnQ::Object::Field(),
         'extn' => EnQ::Object::Field('REGEX',{regex =>'^[0-9]+$'}),
-        'pass' => EnQ::Object::Field(),
+        'pass' => EnQ::Object::Field('REGEX|CB',{regex=>'.{8}', cb=>\&hashPass}),
     },
     db => {
         key   => 'uid',
