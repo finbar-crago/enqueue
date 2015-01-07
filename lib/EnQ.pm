@@ -54,7 +54,7 @@ sub new {
     }
 
     my $this = bless($self, $class);
-    $this->ObjInit();
+    $this->_init();
 
     return $this;
 }
@@ -68,7 +68,7 @@ sub Obj {
     return $o;
 }
 
-sub ObjInit {
+sub _init {
     my $self = shift;
     for (glob $INC{"EnQ.pm"} =~ s|(.+/EnQ).pm|$1/Obj/*.pm|r){
 	require;
