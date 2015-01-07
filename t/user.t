@@ -2,7 +2,7 @@
 use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 
-use Test::Simple tests => 11;
+use Test::Simple tests => 12;
 use EnQ;
 
 my $EnQ = EnQ->new({config_file => "$FindBin::Bin/../misc/sample_config.yml"});
@@ -21,7 +21,8 @@ ok($u->extn eq '12345', "get extn");
 
 ok(!$u->extn("ABCD"), "set bad extn");
 
-
 my $d = $EnQ->Obj('User');
+ok($d->uid ne 'finbar', "check object leaks");
+
 ok($d->Data({uid=>'123', extn=>'456', pass=>'12345678'}), "Object::Data({...})");
 ok($d->uid eq '123', "Object::Data({...}) ret");

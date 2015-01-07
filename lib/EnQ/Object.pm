@@ -138,11 +138,11 @@ sub _init {
 	id     => undef,
 	parent => undef,
 	type   => undef,
-	data   => $mod->{'data'} || undef,
+	data   => {},
+	def    => $mod->{'data'} || undef,
 	db     => $mod->{'db'}   || undef,
 	_error => undef,
     };
-
 
     my $_closure = sub{
 	my $field = shift;
@@ -150,33 +150,33 @@ sub _init {
 	return \$self->{$1} if $field =~ /^_(.+)/;
 	$self->{'_error'} = undef;
 
-	if(!exists($self->{'data'}{$field})){
+	if(!exists($self->{'def'}{$field})){
 	    $self->{'_error'} = 'field undefined';
 	    return undef;
 	}
 
 	if(@_){ #write var
 
-	    if($self->{'data'}{$field} && $self->{'data'}{$field}{'mode'} & WRITE){
+	    if($self->{'def'}{$field} && $self->{'def'}{$field}{'mode'} & WRITE){
 		my $value = shift || '';
 
-		if($self->{'data'}{$field}{'mode'} & REGEX){
-		    my $regex = $self->{'data'}{$field}{'regex'};
+		if($self->{'def'}{$field}{'mode'} & REGEX){
+		    my $regex = $self->{'def'}{$field}{'regex'};
 		    if($value !~ m/$regex/){
 			$self->{'_error'} = 'faild regex';
 			return undef;
 		    }
 		}
 
-		if($self->{'data'}{$field}{'mode'} & CB){
-		    $value = &{$self->{'data'}{$field}{'cb'}}($value);
+		if($self->{'def'}{$field}{'mode'} & CB){
+		    $value = &{$self->{'def'}{$field}{'cb'}}($value);
 		    if(!$value){
 			$self->{'_error'} = 'faild callback';
 			return undef;
 		    }
 		}
 
-		$self->{'data'}{$field}{'value'} = $value;
+		$self->{'data'}{$field} = $value;
 		return $value;
 
 	    } else {
@@ -184,8 +184,8 @@ sub _init {
 		return undef;
 	    }
 	} else { #read var
-	    if($self->{'data'}{$field} && $self->{'data'}{$field}{'mode'} & READ){
-		return $self->{'data'}{$field}{'value'};
+	    if($self->{'data'}{$field} && $self->{'def'}{$field}{'mode'} & READ){
+		return $self->{'data'}{$field};
 	    } else {
 		$self->{'_error'} = 'cannot read';
 		return undef;
