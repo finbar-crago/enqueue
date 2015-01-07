@@ -71,6 +71,57 @@ sub new {
     return bless $closure, $class;
 }
 
+sub Field {
+    my ($obj) = @_;
+
+    my $i = 0;
+    $obj->{'mode'}|='';
+    for(split /\|/, $obj->{'mode'}){
+	if    ($_ eq 'READ'   ){ $i|= 1  }
+	elsif ($_ eq 'WRITE'  ){ $i|= 2  }
+	elsif ($_ eq 'REQURED'){ $i|= 4  }
+	elsif ($_ eq 'REGEX'  ){ $i|= 8  }
+	elsif ($_ eq 'CB'     ){ $i|= 16 }
+    }
+    if(!($i & (READ|WRITE))){
+	$i|=(READ|WRITE);
+    }
+    $obj->{'mode'} = $i;
+    return $obj;
+}
+
+sub Push {
+    my $self = shift;
+    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
+}
+
+sub Pull {
+    my $self = shift;
+    my ($id) = @_;
+    my $key = ${$self->_db}->{'key'};
+    my $data = ${$self->_parent}->{'_db'}->get(${$self->_db}->{'table'}, $key, $id);
+    if(defined $data){ $self->$_($data->{$_}) for (keys $data); }
+    ${$self->_data}->{$key}->{'value'} = $id;
+}
+
+sub Data {
+    my $this = shift;
+    my $ret = {};
+    for (keys ${$this->_data}){
+	$ret->{$_} = $this->$_;
+    }
+    return $ret;
+}
+
+sub is_error {
+    my $self = shift;
+    if($self->_error){
+	return $self->_error;
+    } else {
+	return undef;
+    }
+}
+
 sub _init {
     my $mod  = shift;
     my $self =
@@ -139,57 +190,6 @@ sub _init {
     };
 
     return $_closure;
-}
-
-sub Field {
-    my ($obj) = @_;
-
-    my $i = 0;
-    $obj->{'mode'}|='';
-    for(split /\|/, $obj->{'mode'}){
-	if    ($_ eq 'READ'   ){ $i|= 1  }
-	elsif ($_ eq 'WRITE'  ){ $i|= 2  }
-	elsif ($_ eq 'REQURED'){ $i|= 4  }
-	elsif ($_ eq 'REGEX'  ){ $i|= 8  }
-	elsif ($_ eq 'CB'     ){ $i|= 16 }
-    }
-    if(!($i & (READ|WRITE))){
-	$i|=(READ|WRITE);
-    }
-    $obj->{'mode'} = $i;
-    return $obj;
-}
-
-sub Push {
-    my $self = shift;
-    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
-}
-
-sub Pull {
-    my $self = shift;
-    my ($id) = @_;
-    my $key = ${$self->_db}->{'key'};
-    my $data = ${$self->_parent}->{'_db'}->get(${$self->_db}->{'table'}, $key, $id);
-    if(defined $data){ $self->$_($data->{$_}) for (keys $data); }
-    ${$self->_data}->{$key}->{'value'} = $id;
-}
-
-sub Data {
-    my $this = shift;
-    my $ret = {};
-    for (keys ${$this->_data}){
-	$ret->{$_} = $this->$_;
-    }
-    return $ret;
-}
-
-sub is_error {
-    my $self = shift;
-    if($self->_error){
-	return $self->_error;
-    } else {
-	return undef;
-    }
 }
 
 sub AUTOLOAD {
