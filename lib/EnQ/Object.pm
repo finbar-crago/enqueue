@@ -25,12 +25,12 @@ EnQ::Object - The Enqueue PBX Core Object Library
   my $Q = EnQ->new({config => 'my_config.yml'});
   my $U = $Q->Obj('User');
 
-  $U->pull('user_id');
+  $U->Pull('user_id');
   print $U->name;
   $U->extn("1234") or print $u->is_error();
-  $U->push();
+  $U->Push();
 
-  $dump_all = $U->data();
+  $dump_all = $U->Data();
   $bypass_closure = ${$U->_db}->{'key'};
   ${$U->_parent} = $more_bypassing;
 
@@ -160,12 +160,12 @@ sub Field {
     return $obj;
 }
 
-sub push {
+sub Push {
     my $self = shift;
-    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->data);
+    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
 }
 
-sub pull {
+sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
@@ -174,7 +174,7 @@ sub pull {
     ${$self->_data}->{$key}->{'value'} = $id;
 }
 
-sub data {
+sub Data {
     my $this = shift;
     my $ret = {};
     for (keys ${$this->_data}){
