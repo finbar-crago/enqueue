@@ -4,8 +4,8 @@ use Mojo::Base 'Mojolicious::Controller';
 sub info {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
-  $u->pull($self->param('uid'));
-  $self->render(json => $u->data);
+  $u->Pull($self->param('uid'));
+  $self->render(json => $u->Data);
 }
 
 sub add {
@@ -15,10 +15,9 @@ sub add {
   $u->uid($self->param('uid'));
   $u->name($self->param('name'));
   $u->extn($self->param('extn'));
-  $u->sipPass($self->param('sipPass'));
-  $u->wwwPass($self->param('wwwPass'));
+  $u->pass($self->param('pass'));
 
-  $u->push();
+  $u->Push();
 
   $self->render(json => {});
 }

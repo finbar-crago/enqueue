@@ -25,12 +25,12 @@ EnQ::Object - The Enqueue PBX Core Object Library
   my $Q = EnQ->new({config => 'my_config.yml'});
   my $U = $Q->Obj('User');
 
-  $U->pull('user_id');
+  $U->Pull('user_id');
   print $U->name;
   $U->extn("1234") or print $u->is_error();
-  $U->push();
+  $U->Push();
 
-  $dump_all = $U->data();
+  $dump_all = $U->Data();
   $bypass_closure = ${$U->_db}->{'key'};
   ${$U->_parent} = $more_bypassing;
 
@@ -64,6 +64,12 @@ use constant {
     REGEX   => 8,
     CB      => 16
 };
+
+sub new {
+    my $class = shift;
+    my $closure = EnQ::Object::_init(${$EnQ::Obj::{$class=~s|EnQ::Obj::([^:]+)|$1::|r}{'Object'}});
+    return bless $closure, $class;
+}
 
 sub _init {
     my $mod  = shift;
@@ -135,14 +141,12 @@ sub _init {
     return $_closure;
 }
 
-sub add {
-    my $obj = shift;
-    my ($name, $args) = @_;
-    $obj->{'data'}{$name} = $args;
-    $obj->{'data'}{$name}{'mode'}|='';
+sub Field {
+    my ($obj) = @_;
 
     my $i = 0;
-    for(split /\|/, $obj->{'data'}{$name}{'mode'}){
+    $obj->{'mode'}|='';
+    for(split /\|/, $obj->{'mode'}){
 	if    ($_ eq 'READ'   ){ $i|= 1  }
 	elsif ($_ eq 'WRITE'  ){ $i|= 2  }
 	elsif ($_ eq 'REQURED'){ $i|= 4  }
@@ -152,15 +156,16 @@ sub add {
     if(!($i & (READ|WRITE))){
 	$i|=(READ|WRITE);
     }
-    $obj->{'data'}{$name}{'mode'} = $i;
+    $obj->{'mode'} = $i;
+    return $obj;
 }
 
-sub push {
+sub Push {
     my $self = shift;
-    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->data);
+    ${$self->_parent}->{'_db'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
 }
 
-sub pull {
+sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
@@ -169,7 +174,7 @@ sub pull {
     ${$self->_data}->{$key}->{'value'} = $id;
 }
 
-sub data {
+sub Data {
     my $this = shift;
     my $ret = {};
     for (keys ${$this->_data}){
