@@ -72,7 +72,11 @@ sub ObjInit {
     my $self = shift;
     for (glob $INC{"EnQ.pm"} =~ s|(.+/EnQ).pm|$1/Obj/*.pm|r){
 	require;
-	$self->{'Obj'}{s|.+/([^.]+)\.pm|$1|r} = &{$EnQ::Obj::{s|.+/([^.]+)\.pm|$1::|r}{'_load'}}(\$self);
+	if(defined $EnQ::Obj::{s|.+/([^.]+)\.pm|$1::|r}{'_load'}){
+	    $self->{'Obj'}{s|.+/([^.]+)\.pm|$1|r} = &{$EnQ::Obj::{s|.+/([^.]+)\.pm|$1::|r}{'_load'}}(\$self);
+	} else {
+	    $self->{'Obj'}{s|.+/([^.]+)\.pm|$1|r} = ${$EnQ::Obj::{s|.+/([^.]+)\.pm|$1::|r}{'Object'}};
+	}
     }
 
     if(defined $self->{'db'}){
