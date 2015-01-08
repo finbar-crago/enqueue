@@ -2,7 +2,7 @@
 use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 
-use Test::Simple tests => 12;
+use Test::Simple tests => 14;
 use EnQ;
 
 my $EnQ = EnQ->new({config_file => "$FindBin::Bin/../misc/sample_config.yml"});
@@ -13,8 +13,12 @@ ok($u->isa('EnQ::Obj::User'), "isa == EnQ::Obj::User");
 
 ok($u->uid("finbar"), "set uid");
 ok($u->extn("12345"), "set extn");
+
 ok($u->pass("12345678"), "set pass");
 ok($u->pass =~/^[0-9a-f]{32}::[0-9a-f]{46}$/, "hash pass");
+
+ok($u->checkPass("12345678"), "checkPass (good)");
+ok(!$u->checkPass("789456123"), "checkPass (bad)");
 
 ok($u->uid eq 'finbar', "get uid");
 ok($u->extn eq '12345', "get extn");

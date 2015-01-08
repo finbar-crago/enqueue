@@ -32,7 +32,19 @@ sub hashPass {
     $c->salt($salt);
     $c->add($pass);
 
-    return sprintf('%016x%016x::%s', unpack('qq',$c->salt), $c->hexdigest);
+    return sprintf('%s::%s', unpack('H[32]',$c->salt), $c->hexdigest);
+}
+
+sub checkPass {
+    my $self = shift;
+    my ($pass) = @_;
+
+    my ($salt, $hash) = split /::/, $self->pass;
+    my $c = Digest->new('Bcrypt'); $c->cost(1);
+    $c->salt(pack('H[32]', $salt));
+    $c->add($pass);
+
+    return ($hash eq $c->hexdigest);
 }
 
 sub _load {
