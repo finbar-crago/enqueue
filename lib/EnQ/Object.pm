@@ -74,7 +74,8 @@ use constant {
 
 sub new {
     my $class = shift;
-    my $closure = EnQ::Object::_init($class, ${$EnQ::Obj::{$class=~s|EnQ::Obj::([^:]+)|$1::|r}{'Object'}});
+    my ($parent) = @_;
+    my $closure = EnQ::Object::_init($class, $parent);
     return bless $closure, $class;
 }
 
@@ -129,11 +130,12 @@ sub is_error {
 }
 
 sub _init {
-    my ($mod, $obj)  = @_;
+    my ($mod, $parent)  = @_;
+    my $obj = ${$EnQ::Obj::{$mod=~s|EnQ::Obj::([^:]+)|$1::|r}{'Object'}};
     my $self =
     {
 	id     => undef,
-	parent => undef,
+	parent => $parent,
 	type   => $mod,
 	def    => $obj->{'def'} || undef,
 	db     => $obj->{'db'}  || undef,
