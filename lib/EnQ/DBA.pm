@@ -61,7 +61,6 @@ sub new {
 	conn => $args->{'conn'} || undef,
 	user => $args->{'user'} || undef,
 	pass => $args->{'pass'} || undef,
-	_err => undef,
     };
 
     return bless $self, $class;
@@ -79,10 +78,7 @@ sub get {
     my $Q = $SQL->{$self->{type}}->{GET};
     $Q =~ s|<TABLE>|$table|g;
     $Q =~ s|<KEY>|$key|g;
-
-    my $sth = $self->{'dbh'}->prepare($Q);
-    $sth->execute($id);
-
+    my $sth; (($sth = $self->{'dbh'}->prepare($Q)) && $sth->execute($id)) || (return undef);
     return $sth->fetchrow_hashref;
 }
 
@@ -99,8 +95,8 @@ sub put {
     $Q =~ s|<FIELDS>|$f|g;
     $Q =~ s|<DATA>|$d|g;
 
-    my $sth = $self->{'dbh'}->prepare($Q);
-    $sth->execute((values $data));
+    my $sth; (($sth = $self->{'dbh'}->prepare($Q)) && $sth->execute((values $data))) || (return undef);
+    return 1;
 }
 
 sub del {
@@ -111,7 +107,12 @@ sub del {
     $Q =~ s|<TABLE>|$table|g;
     $Q =~ s|<KEY>|$key|g;
 
-    my $sth = $self->{'dbh'}->do($Q);
+    my $sth = $self->{'dbh'}->do($Q) || return undef;
+}
+
+sub is_error {
+    my $self = shift;
+    return $self->{'dbh'}->errstr;
 }
 
 sub _db_init {
