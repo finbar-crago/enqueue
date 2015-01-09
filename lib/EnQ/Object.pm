@@ -124,11 +124,7 @@ sub Data {
 
 sub is_error {
     my $self = shift;
-    if($self->_error){
-	return $self->_error;
-    } else {
-	return undef;
-    }
+    return ${$self->_error};
 }
 
 sub _init {
@@ -142,19 +138,18 @@ sub _init {
 	def    => $obj->{'def'} || undef,
 	db     => $obj->{'db'}  || undef,
 	data   => {},
-	_error => undef,
+	error  => '',
     };
 
     $DBA = $parent->{'DBA'};
 
     my $_closure = sub{
 	my $field = shift;
-	return $self->{'_error'} if $field eq '_error';
 	return \$self->{$1} if $field =~ /^_(.+)/;
-	$self->{'_error'} = undef;
+	$self->{'error'} = '';
 
 	if(!exists($self->{'def'}{$field})){
-	    $self->{'_error'} = 'field undefined';
+	    $self->{'error'} = 'field undefined';
 	    return undef;
 	}
 
@@ -166,7 +161,7 @@ sub _init {
 		if($self->{'def'}{$field}{'mode'} & REGEX){
 		    my $regex = $self->{'def'}{$field}{'regex'};
 		    if($value !~ m/$regex/){
-			$self->{'_error'} = 'faild regex';
+			$self->{'error'} = 'faild regex';
 			return undef;
 		    }
 		}
@@ -174,7 +169,7 @@ sub _init {
 		if($self->{'def'}{$field}{'mode'} & CB){
 		    $value = &{$self->{'def'}{$field}{'cb'}}($value);
 		    if(!$value){
-			$self->{'_error'} = 'faild callback';
+			$self->{'error'} = 'faild callback';
 			return undef;
 		    }
 		}
@@ -183,14 +178,14 @@ sub _init {
 		return $value;
 
 	    } else {
-		$self->{'_error'} = 'cannot write';
+		$self->{'error'} = 'cannot write';
 		return undef;
 	    }
 	} else { #read var
 	    if($self->{'data'}{$field} && $self->{'def'}{$field}{'mode'} & READ){
 		return $self->{'data'}{$field};
 	    } else {
-		$self->{'_error'} = 'cannot read';
+		$self->{'error'} = 'cannot read';
 		return undef;
 	    }
 	}
