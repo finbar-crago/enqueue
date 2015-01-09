@@ -39,7 +39,7 @@ sub checkPass {
     my $self = shift;
     my ($pass) = @_;
 
-    my ($salt, $hash) = split /::/, $self->pass;
+    my ($salt, $hash) = split /::/, ${$self->_data}->{'pass'};
     my $c = Digest->new('Bcrypt'); $c->cost(1);
     $c->salt(pack('H[32]', $salt));
     $c->add($pass);
