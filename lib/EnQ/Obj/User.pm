@@ -21,6 +21,7 @@ our $Object = {
 };
 
 sub hashPass {
+    my $self = shift;
     my ($pass) = @_;
     my $salt;
     open(RAND, '/dev/urandom');
