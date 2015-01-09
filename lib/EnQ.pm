@@ -65,7 +65,7 @@ sub Obj {
     my $self = shift;
     my ($mod) = @_;
     return undef if $mod !~ /^[a-z]+$/i;
-    my $o = eval "EnQ::Obj::$mod->new(\$self);";
+    my $o = "EnQ::Obj::$mod"->new($self);
     return $o;
 }
 
