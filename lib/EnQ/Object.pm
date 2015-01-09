@@ -72,6 +72,8 @@ use constant {
     CB      => 16
 };
 
+my $DBA;
+
 sub new {
     my $class = shift;
     my ($parent) = @_;
@@ -100,14 +102,14 @@ sub Field {
 
 sub Push {
     my $self = shift;
-    ${$self->_parent}->{'DBA'}->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
+    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
 }
 
 sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
-    my $data = ${$self->_parent}->{'DBA'}->get(${$self->_db}->{'table'}, $key, $id);
+    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id);
     if(defined $data){ ${$self->_data}->{$_} = $data->{$_} for (keys $data); }
     ${$self->_data}->{$key} = $id;
 }
@@ -142,6 +144,8 @@ sub _init {
 	data   => {},
 	_error => undef,
     };
+
+    $DBA = $parent->{'DBA'};
 
     my $_closure = sub{
 	my $field = shift;
