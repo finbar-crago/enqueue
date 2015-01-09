@@ -109,9 +109,13 @@ sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
-    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id) or error($DBA->error);
-    if(defined $data){ ${$self->_data}->{$_} = $data->{$_} for (keys $data); }
-    ${$self->_data}->{$key} = $id;
+    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id);
+    if(defined $data){
+	${$self->_data}->{$_} = $data->{$_} for (keys $data);
+    } else {
+	$self->error($DBA->error?$DBA->error:'no record');
+    } ${$self->_data}->{$key} = $id;
+    return $DBA->error?undef:1;
 }
 
 sub Data {
@@ -125,6 +129,7 @@ sub Data {
 sub error {
     my $self = shift;
     (${$self->_error}) = @_ if !$#_;
+    use Data::Dumper; print Dumper $self;
     return ${$self->_error};
 }
 

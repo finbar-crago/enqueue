@@ -4,8 +4,11 @@ use Mojo::Base 'Mojolicious::Controller';
 sub info {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
-  $u->Pull($self->param('uid'));
-  $self->render(json => $u->Data);
+  if($u->Pull($self->param('uid')) && !$u->error){
+      $self->render(json => {status=>'OK', data=>$u->Data});
+  } else {
+      $self->render(json => {status=>'ERROR', error=>$u->error})
+  }
 }
 
 sub add {
@@ -20,7 +23,7 @@ sub add {
   if($u->Push()){
       $self->render(json => {status=>'OK'});
   } else {
-      $self->render(json => {status=>'ERROR', error=>$u->error });
+      $self->render(json => {status=>'ERROR', error=> $u->error()});
   }
 }
 
