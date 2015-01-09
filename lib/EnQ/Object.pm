@@ -102,7 +102,7 @@ sub Field {
 
 sub Push {
     my $self = shift;
-    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data) or error($DBA->error);
+    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, ${$self->_data}) or error($DBA->error);
 }
 
 sub Pull {
