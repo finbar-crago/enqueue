@@ -11,7 +11,7 @@ our $Object = {
 	'uid'  => EnQ::Object::Field(),
 	'name' => EnQ::Object::Field(),
 	'extn' => EnQ::Object::Field('REGEX',{regex =>'^[0-9]+$'}),
-	'pass' => EnQ::Object::Field('REGEX|CB',{regex=>'.{8}', cb=>\&hashPass}),
+	'pass' => EnQ::Object::Field('WRITE|REGEX|CB',{regex=>'.{8}', cb=>\&hashPass}),
     },
     db => {
 	key   => 'uid',
