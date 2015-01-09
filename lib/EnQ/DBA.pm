@@ -124,8 +124,9 @@ sub _db_init {
     my $tables = $sth->fetchall_hashref('name');
 
     for (keys $ObjList){
-	if(!defined $tables->{$ObjList->{$_}->{db}{table}}){
-	    $self->{'dbh'}->do($ObjList->{User}->{db}{setup});
+	my $db = $ObjList->{$_}->{db};
+	if(defined($db->{table}) && !defined($tables->{$db->{table}})){
+	    $self->{'dbh'}->do($db->{db}{setup});
 	}
     }
 }
