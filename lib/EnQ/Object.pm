@@ -122,8 +122,7 @@ sub Data {
     my $self = shift;
     my ($dat)= shift || {};
     $self->$_($dat->{$_}) for (keys $dat);
-
-    return ${$self->_data};
+    return map {$_=>$self->$_} grep {$self->$_} (keys ${$self->_data});
 }
 
 sub error {
