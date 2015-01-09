@@ -15,7 +15,7 @@ ok($u->uid("finbar"), "set uid");
 ok($u->extn("12345"), "set extn");
 
 ok($u->pass("12345678"), "set pass");
-ok($u->pass =~/^[0-9a-f]{32}::[0-9a-f]{46}$/, "hash pass");
+ok(${$u->_data}->{'pass'} =~/^[0-9a-f]{32}::[0-9a-f]{46}$/, "hash pass");
 
 ok($u->checkPass("12345678"), "checkPass (good)");
 ok(!$u->checkPass("abc123"), "checkPass (bad)");
