@@ -102,14 +102,14 @@ sub Field {
 
 sub Push {
     my $self = shift;
-    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data);
+    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data) or set_error($DBA->is_error);
 }
 
 sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
-    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id);
+    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id) or set_error($DBA->is_error);
     if(defined $data){ ${$self->_data}->{$_} = $data->{$_} for (keys $data); }
     ${$self->_data}->{$key} = $id;
 }
@@ -125,6 +125,11 @@ sub Data {
 sub is_error {
     my $self = shift;
     return ${$self->_error};
+}
+
+sub set_error {
+    my $self = shift;
+    (${$self->_error}) = @_;
 }
 
 sub _init {
