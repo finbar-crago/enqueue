@@ -128,7 +128,6 @@ sub Data {
 sub error {
     my $self = shift;
     (${$self->_error}) = @_ if !$#_;
-    use Data::Dumper; print Dumper $self;
     return ${$self->_error};
 }
 
