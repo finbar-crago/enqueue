@@ -17,9 +17,11 @@ sub add {
   $u->extn($self->param('extn'));
   $u->pass($self->param('pass'));
 
-  $u->Push();
-
-  $self->render(json => {});
+  if($u->Push()){
+      $self->render(json => {status=>'OK'});
+  } else {
+      $self->render(json => {status=>'ERROR', error=>$u->error });
+  }
 }
 
 sub list {

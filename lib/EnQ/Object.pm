@@ -34,7 +34,7 @@ EnQ::Object - The Enqueue PBX Core Object Library
 
   $U->Pull('user_id');
   print $U->name;
-  $U->extn("1234") or print $u->is_error();
+  $U->extn("1234") or print $u->error();
   $U->Push();
 
   $dump_all = $U->Data();
@@ -102,14 +102,14 @@ sub Field {
 
 sub Push {
     my $self = shift;
-    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data) or set_error($DBA->is_error);
+    $DBA->put(${$self->_db}->{'table'}, ${$self->_db}->{'key'}, $self->Data) or error($DBA->error);
 }
 
 sub Pull {
     my $self = shift;
     my ($id) = @_;
     my $key = ${$self->_db}->{'key'};
-    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id) or set_error($DBA->is_error);
+    my $data = $DBA->get(${$self->_db}->{'table'}, $key, $id) or error($DBA->error);
     if(defined $data){ ${$self->_data}->{$_} = $data->{$_} for (keys $data); }
     ${$self->_data}->{$key} = $id;
 }
@@ -122,14 +122,10 @@ sub Data {
     return ${$self->_data};
 }
 
-sub is_error {
+sub error {
     my $self = shift;
+    (${$self->_error}) = @_ if !$#_;
     return ${$self->_error};
-}
-
-sub set_error {
-    my $self = shift;
-    (${$self->_error}) = @_;
 }
 
 sub _init {

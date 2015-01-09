@@ -110,7 +110,7 @@ sub del {
     my $sth = $self->{'dbh'}->do($Q) || return undef;
 }
 
-sub is_error {
+sub error {
     my $self = shift;
     return $self->{'dbh'}->errstr;
 }

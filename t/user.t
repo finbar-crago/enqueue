@@ -24,7 +24,7 @@ ok($u->uid eq 'finbar', "get uid");
 ok($u->extn eq '12345', "get extn");
 
 ok(!$u->extn("ABCD"), "set bad extn");
-ok($u->is_error, "extn is_error");
+ok($u->error, "extn error");
 
 my $d = $EnQ->Obj('User');
 ok($d->uid ne 'finbar', "check object leaks");
