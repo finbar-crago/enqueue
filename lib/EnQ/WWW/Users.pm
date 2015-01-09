@@ -5,7 +5,7 @@ sub info {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
   if($u->Pull($self->param('uid')) && !$u->error){
-      $self->render(json => {status=>'OK', data=>$u->Data});
+      $self->render(json => {status=>'OK', data=>{$u->Data}});
   } else {
       $self->render(json => {status=>'ERROR', error=>$u->error})
   }
