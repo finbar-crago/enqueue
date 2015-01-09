@@ -126,7 +126,7 @@ sub _db_init {
     for (keys $ObjList){
 	my $db = $ObjList->{$_}->{db};
 	if(defined($db->{table}) && !defined($tables->{$db->{table}})){
-	    $self->{'dbh'}->do($db->{db}{setup});
+	    $self->{'dbh'}->do($db->{setup});
 	}
     }
 }
