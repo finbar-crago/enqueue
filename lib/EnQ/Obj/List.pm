@@ -16,8 +16,10 @@ sub getList {
     my ($type) = @_;
 
     my $table = $self->{'parent'}->{'Obj'}->{$type}->{'db'}->{'table'};
-    $self->{'data'}{'list'} = '...'; ## <-- DB Stuff goes here!
-    return 1;
+    my $id = $self->{'parent'}->{'Obj'}->{$type}->{'db'}->{'key'};
+    my $l = $self->{'parent'}->{'DBA'}->Q("SELECT $id FROM $table WHERE 1");
+    $self->{'data'}{'list'} = @$l;
+    return scalar(@$l);
 }
 
 1;
