@@ -72,6 +72,12 @@ sub connect {
     return $self->{'dbh'};
 }
 
+sub Q {
+    my $self = shift;
+    my ($sql, @args) = @_;
+    return $self->{'dbh'}->selectall_arrayref($sql);
+}
+
 sub get {
     my $self = shift;
     my ($table, $key, $id) = @_;
