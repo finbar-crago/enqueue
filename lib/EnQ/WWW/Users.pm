@@ -29,7 +29,9 @@ sub add {
 
 sub list {
   my $self = shift;
-  $self->render(json => {});
+  my $l = $self->EnQ->Obj('List');
+  $l->type('User');
+  $self->render(json => { list => @{$l->list} });
 }
 
 1;
