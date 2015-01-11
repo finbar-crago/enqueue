@@ -18,7 +18,7 @@ sub getList {
     my $table = $self->{'parent'}->{'Obj'}->{$type}->{'db'}->{'table'};
     my $id = $self->{'parent'}->{'Obj'}->{$type}->{'db'}->{'key'};
     my $l = $self->{'parent'}->{'DBA'}->Q("SELECT $id FROM $table WHERE 1");
-    $self->{'data'}{'list'} = @$l;
+    @{$self->{'data'}{'list'}} = @{$l};
     return scalar(@$l);
 }
 
