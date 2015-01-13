@@ -4,7 +4,7 @@ use warnings;
 
 =head1 NAME
 
-EnQ::DBA - Enqueue PBX Database Stuff
+EnQ::Obj::User - EnQ User Object
 
 =head1 SYNOPSIS
 
