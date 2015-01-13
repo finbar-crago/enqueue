@@ -87,9 +87,4 @@ sub checkPass {
     return ($hash eq $c->hexdigest);
 }
 
-sub _load {
-    my $parent = shift;
-    return $Object;
-}
-
 1;
