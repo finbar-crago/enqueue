@@ -43,8 +43,14 @@ our $Object = {
     db => {
 	key   => 'qid',
 	table => 'queues',
-	setup => 'CREATE TABLE queues (qid TEXT PRIMARY KEY, name TEXT'),
+	setup => 'CREATE TABLE queues (qid TEXT PRIMARY KEY, name TEXT)',
     },
 };
+
+sub astConfig {
+    my $self = shift;
+
+
+}
 
 1;
