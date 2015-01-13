@@ -30,8 +30,7 @@ sub add {
 sub list {
   my $self = shift;
   my $l = $self->EnQ->Obj('List');
-  $l->type('User');
-  $self->render(json => { list => @{$l->list} });
+  $self->render(json => { count => $l->type('User'), list => $l->list() }  );
 }
 
 1;

@@ -15,7 +15,7 @@ sub startup {
 
   $r->get('/api/metrics')->to('Metrics#main');
 
-  $r->get('/api/user')->to('Users#list');
+  $r->get('/api/users')->to('Users#list');
   $r->get('/api/user/:uid')->to('Users#info');
   $r->post('/api/user')->to('Users#add');
 

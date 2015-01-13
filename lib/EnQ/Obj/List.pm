@@ -18,8 +18,9 @@ sub getList {
     my $table = $self->{'parent'}->{'Obj'}->{$type}->{'db'}->{'table'};
     my $id = $self->{'parent'}->{'Obj'}->{$type}->{'db'}->{'key'};
     my $l = $self->{'parent'}->{'DBA'}->Q("SELECT $id FROM $table WHERE 1");
-    @{$self->{'data'}{'list'}} = @{$l};
-    return scalar(@$l);
+
+    @{$self->{'data'}{'list'}} = map $l->[$_][0],(0..$#{$l});
+    return @{$l};
 }
 
 1;
