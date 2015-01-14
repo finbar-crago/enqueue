@@ -27,6 +27,14 @@ sub add {
   }
 }
 
+sub del {
+  my $self = shift;
+  my $u = $self->EnQ->Obj('User');
+  if($u->Pull($self->param('uid')) && !$u->error){
+      # ???
+  }
+}
+
 sub list {
   my $self = shift;
   my $l = $self->EnQ->Obj('List');
