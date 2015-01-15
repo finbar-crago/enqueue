@@ -12,6 +12,7 @@ sub startup {
   $self->helper(EnQ => sub { return $EnQ });
 
   $r->get('/')->to('Dashboard#main');
+  $r->get('/users')->to('Users#main');
 
   $r->get('/api/metrics')->to('Metrics#main');
 

@@ -1,6 +1,11 @@
 package EnQ::WWW::Users;
 use Mojo::Base 'Mojolicious::Controller';
 
+sub main {
+    my $self = shift;
+    $self->render();
+}
+
 sub info {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
