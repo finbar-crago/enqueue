@@ -1,0 +1,17 @@
+<html ng-app="EnQ">
+ <body ng-controller="UsersCtrl">
+
+   <table>
+     <tbody ng:repeat="i in users">
+       <tr>
+	 <td>{{i.uid}}</td>
+	 <td>{{i.extn}}</td>
+	 <td>{{i.name}}</td>
+       </tr>
+     </tbody>
+   </table>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+   <script src="test.js"></script>
+ </body>
+</html>
