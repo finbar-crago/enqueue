@@ -1,4 +1,15 @@
-<div class="row">
+<div class="row" ng-hide="allGood"><div class="col-lg-12">
+
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title">Error</h3>
+    </div>
+    <div class="panel-body">
+      {{error}}
+    </div>
+  </div>
+
+</div></div><div class="row">
 
   <form ng-submit="submit()" role="form">
     <div class="col-lg-6">
