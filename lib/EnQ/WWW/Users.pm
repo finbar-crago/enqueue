@@ -20,11 +20,11 @@ sub add {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
 
-  if($self->req->json->{'uid'} =~ /[a-z0-9]{4,}/i){
+  if(defined($self->req->json->{'uid'}) && ($self->req->json->{'uid'} =~ /^[a-z0-9]{3,}/i)){
 
       $u->Data($self->req->json);
 
-  }  elsif($self->param('uid') =~ /[a-z0-9]{4,}/i){
+  }  elsif(defined($self->param('uid')) && ($self->param('uid') =~ /^[a-z0-9]{3,}/i)){
 
       $u->uid($self->param('uid'));
       $u->name($self->param('name'));
@@ -32,7 +32,7 @@ sub add {
       $u->pass($self->param('pass'));
 
   } else {
-      $self->render(json => {status=>'ERROR', error=> 'missing or bad uid'});
+      $self->render(json => {status=>'ERROR', error=> 'Missing or bad uid.'});
       return;
   }
 
