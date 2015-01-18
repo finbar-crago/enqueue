@@ -17,10 +17,21 @@ function ($rootScope, $scope, $routeParams, $http){
 		if(u.data.uid == uid){
 		    $rootScope.title = 'Agent (' + uid + ')';
 		    $scope.user = u.data;
-		    $scope.user.pass =  '******';
 		}
             });
         });
 
     });
+
+
+    $scope.submit = function() {
+        if ($scope.user) {
+	    console.log($scope.user);
+	    $http.post('/api/user/', $scope.user).success(function(r){
+		console.log(r);
+	    });
+        }
+    };
+
+
 }]);

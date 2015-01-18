@@ -20,16 +20,28 @@ sub add {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
 
-  $u->uid($self->param('uid'));
-  $u->name($self->param('name'));
-  $u->extn($self->param('extn'));
-  $u->pass($self->param('pass'));
+  if($self->req->json->{'uid'} =~ /[a-z0-9]{4,}/i){
+
+      $u->Data($self->req->json);
+
+  }  elsif($self->param('uid') =~ /[a-z0-9]{4,}/i){
+
+      $u->uid($self->param('uid'));
+      $u->name($self->param('name'));
+      $u->extn($self->param('extn'));
+      $u->pass($self->param('pass'));
+
+  } else {
+      $self->render(json => {status=>'ERROR', error=> 'missing or bad uid'});
+      return;
+  }
 
   if($u->Push()){
       $self->render(json => {status=>'OK'});
   } else {
       $self->render(json => {status=>'ERROR', error=> $u->error()});
   }
+
 }
 
 sub del {
