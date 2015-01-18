@@ -1,5 +1,7 @@
 
-EnQ.controller('UsersCtrl', function ($scope, $http){
+EnQ.controller('UsersCtrl', function ($rootScope, $scope, $http){
+    $rootScope.title = 'Agents';
+
     $scope.users = [];
     $http.get('/api/users').success(function(data){
         data.list.forEach(function(uid){
