@@ -20,13 +20,13 @@ sub add {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
 
-  if(defined($self->req->json->{'uid'}) && ($self->req->json->{'uid'} =~ /^[a-z0-9]{3,}/i)){
+  if(defined($self->req->json) && ($self->req->json->{'uid'} =~ /^[a-z0-9]{3,}/i)){
 
       $u->Data($self->req->json);
 
   }  elsif(defined($self->param('uid')) && ($self->param('uid') =~ /^[a-z0-9]{3,}/i)){
 
-      $u->uid($self->param('uid'));
+      $u-> uid($self->param( 'uid'));
       $u->name($self->param('name'));
       $u->extn($self->param('extn'));
       $u->pass($self->param('pass'));
