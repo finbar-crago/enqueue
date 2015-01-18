@@ -5,9 +5,10 @@ function ($rootScope, $scope, $routeParams, $http){
 
     $rootScope.title = 'Agents';
     var uid = $routeParams.uid;
-    $scope.data  = [];
-    $scope.users = [];
-    $scope.user  = {};
+    $scope.data   = [];
+    $scope.users  = [];
+    $scope.user   = {};
+    $scope.isEdit = false;
 
     $http.get('/api/users').success(function(data){
         data.list.forEach(function(id){
@@ -17,12 +18,12 @@ function ($rootScope, $scope, $routeParams, $http){
 		if(u.data.uid == uid){
 		    $rootScope.title = 'Agent (' + uid + ')';
 		    $scope.user = u.data;
+		    $scope.isEdit = true;
 		}
             });
         });
 
     });
-
 
     $scope.submit = function() {
         if ($scope.user) {
@@ -32,6 +33,5 @@ function ($rootScope, $scope, $routeParams, $http){
 	    });
         }
     };
-
 
 }]);
