@@ -11,7 +11,7 @@ sub startup {
   my $EnQ = EnQ::->new({config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/misc/sample_config.yml|r});
   $self->helper(EnQ => sub { return $EnQ });
 
-  $r->get('/' => sub { $_[0]->render_static('index.html'); });
+  $r->get('/' => sub { shift->reply->static('index.html'); });
 
   $r->get('/api/metrics')->to('Metrics#main');
 
