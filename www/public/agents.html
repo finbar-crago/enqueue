@@ -5,12 +5,12 @@
 
       <div class="form-group">
 	<label>User ID</label>
-	<input class="form-control">
+	<input class="form-control" ng-model="user.uid">
       </div>
 
       <div class="form-group">
 	<label>Password</label>
-	<input type="password" class="form-control">
+	<input type="password" class="form-control" ng-model="user.pass">
       </div>
 
       <button type="submit" class="btn btn-default">Submit</button>
@@ -20,12 +20,12 @@
 
       <div class="form-group">
 	<label>Name</label>
-	<input class="form-control">
+	<input class="form-control" ng-model="user.name">
       </div>
 
       <div class="form-group">
 	<label>Extn</label>
-	<input class="form-control">
+	<input class="form-control" ng-model="user.extn">
       </div>
 
     </div>
@@ -45,12 +45,12 @@
     </thead>
     <tbody ng:repeat="i in users">
       <tr>
-	<td>{{i.uid}}</td>
-	<td>{{i.name}}</td>
-	<td>{{i.extn}}</td>
+	<td>{{data[i].uid}}</td>
+	<td>{{data[i].name}}</td>
+	<td>{{data[i].extn}}</td>
 	<td class="col-md-1">
-	  <a class="btn btn-info"   href="#"><i class="fa fa-pencil-square-o"></i></a>
-	  <a class="btn btn-danger" href="#"><i class="fa fa-times"></i></a>
+	  <a class="btn btn-info"   ng-href="#/admin/agent/{{data[i].uid}}"><i class="fa fa-pencil-square-o"></i></a>
+	  <a class="btn btn-danger" ng-href="#"><i class="fa fa-times"></i></a>
 	</td>
       </tr>
     </tbody>
