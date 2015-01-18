@@ -5,12 +5,12 @@ function($routeProvider) {
     $routeProvider.
 
 	when('/admin/agents', {
-	    templateUrl: 'test.html',
+	    templateUrl: 'agents.html',
 	    controller:  'UsersCtrl'
 	}).
 
 	otherwise({
-	    redirectTo: '/home'
+	    redirectTo: '/'
 	});
 }]);
 
