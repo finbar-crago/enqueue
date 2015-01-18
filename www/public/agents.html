@@ -34,12 +34,24 @@
 
 </div><div class="row"><hr>
 
-  <table class="table table-bordered table-hover">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+	<th>User ID</th>
+	<th>Name</th>
+	<th>Extn</th>
+	<th></th>
+	</tr>
+    </thead>
     <tbody ng:repeat="i in users">
       <tr>
 	<td>{{i.uid}}</td>
-	<td>{{i.extn}}</td>
 	<td>{{i.name}}</td>
+	<td>{{i.extn}}</td>
+	<td class="col-md-1">
+	  <a class="btn btn-info"   href="#"><i class="fa fa-pencil-square-o"></i></a>
+	  <a class="btn btn-danger" href="#"><i class="fa fa-times"></i></a>
+	</td>
       </tr>
     </tbody>
   </table>
