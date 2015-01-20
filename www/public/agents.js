@@ -1,4 +1,4 @@
-var EnqCtrl = angular.module('EnqCtrl', []);
+var EnqCtrl = angular.module('EnqCtrlUsers', []);
 
 EnqCtrl.controller('UsersCtrl', ['$rootScope', '$scope', '$routeParams', '$http',
 function ($rootScope, $scope, $routeParams, $http){
