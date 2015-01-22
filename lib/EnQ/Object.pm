@@ -118,6 +118,12 @@ sub Pull {
     return $DBA->error?undef:1;
 }
 
+sub Purge {
+    my $self = shift;
+    my $key = ${$self->_db}->{'key'};
+    $DBA->del(${$self->_db}->{'table'}, $key, ${$self->_data}->{$key}) or error($DBA->error);
+}
+
 sub Data {
     my $self = shift;
     my ($dat)= shift || {};

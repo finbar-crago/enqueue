@@ -107,11 +107,12 @@ sub put {
 
 sub del {
     my $self = shift;
-    my ($table, $key, $data) = @_;
+    my ($table, $key, $id) = @_;
 
     my $Q = $SQL->{$self->{type}}->{DEL};
     $Q =~ s|<TABLE>|$table|g;
     $Q =~ s|<KEY>|$key|g;
+    $Q =~ s|<ID>|$id|g;
 
     my $sth = $self->{'dbh'}->do($Q) || return undef;
 }

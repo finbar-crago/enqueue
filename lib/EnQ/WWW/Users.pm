@@ -47,8 +47,10 @@ sub add {
 sub del {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
-  if($u->Pull($self->param('uid')) && !$u->error){
-      # ???
+  if($u->Purge($self->param('uid')) && !$u->error){
+      $self->render(json => {status=>'OK'});
+  } else {
+      $self->render(json => {status=>'ERROR', error=> $u->error()});
   }
 }
 
