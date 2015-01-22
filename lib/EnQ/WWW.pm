@@ -13,11 +13,11 @@ sub startup {
 
   $r->get('/' => sub { shift->reply->static('index.html'); });
 
-  $r->get('/api/metrics')->to('Metrics#main');
-
   $r->get('/api/users')->to('Users#list');
-  $r->get('/api/user/:uid')->to('Users#info');
-  $r->post('/api/user')->to('Users#add');
+  $r->get('/api/users/:uid')->to('Users#pull');
+  $r->post('/api/users/:uid')->to('Users#push');
+  $r->delete('/api/users/:uid')->to('Users#purge');
+
 
 }
 

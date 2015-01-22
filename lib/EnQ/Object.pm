@@ -121,6 +121,8 @@ sub Pull {
 sub Purge {
     my $self = shift;
     my $key = ${$self->_db}->{'key'};
+    use Data::Dumper;
+    print Dumper $self->_data;
     $DBA->del(${$self->_db}->{'table'}, $key, ${$self->_data}->{$key}) or error($DBA->error);
 }
 

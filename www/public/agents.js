@@ -19,7 +19,7 @@ function ($rootScope, $scope, $routeParams, $http){
 		$scope.error = r.error;
 		return;
 	    }
-            $http.get('/api/user/'+id).success(function(u){
+            $http.get('/api/users/'+id).success(function(u){
 		if(u.status == 'ERROR'){
 		    $scope.allGood = false;
 		    $scope.error = r.error;
@@ -35,19 +35,35 @@ function ($rootScope, $scope, $routeParams, $http){
 		}
             });
         });
-
     });
 
     $scope.submit = function() {
         if ($scope.user) {
 	    console.log($scope.user);
-	    $http.post('/api/user/', $scope.user).success(function(r){
+	    $http.post('/api/users/'+uid, $scope.user).success(function(r){
 		if(r.status == 'ERROR'){
 		    $scope.allGood = false;
 		    $scope.error = r.error;
+		} else {
+		    $scope.isEdit = true;
+                    $scope.data[$scope.user.uid] = $scope.user;
+		    if($scope.users.indexOf($scope.user.uid) == -1){
+			$scope.users.push($scope.user.uid);
+		    }
 		}
 	    });
         }
+    };
+
+    $scope.purge = function(id){
+	$http.delete('/api/users/'+id).success(function(r){
+	    if(r.status == 'ERROR'){
+		$scope.allGood = false;
+		$scope.error = r.error;
+	    } else {
+		$scope.users.splice($scope.users.indexOf(id),1);
+	    }
+	});
     };
 
 }]);
