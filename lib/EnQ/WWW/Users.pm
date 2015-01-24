@@ -4,16 +4,16 @@ use Mojo::Base 'Mojolicious::Controller';
 sub list {
   my $self = shift;
   my $l = $self->EnQ->Obj('List');
-  $self->render(json => { count => $l->type('User'), list => $l->list() }  );
+  $self->render(json => { status => 'ok', count => $l->type('User'), list => $l->list() }  );
 }
 
 sub pull {
   my $self = shift;
   my $u = $self->EnQ->Obj('User');
   if($u->Pull($self->param('uid')) && !$u->error){
-      $self->render(json => {status=>'OK', data=>{$u->Data}});
+      $self->render(json => {status=>'ok', data=>{$u->Data}});
   } else {
-      $self->render(json => {status=>'ERROR', error=>$u->error})
+      $self->render(json => {status=>'error', error=>$u->error})
   }
 }
 
@@ -33,14 +33,14 @@ sub push {
       $u->pass($self->param('pass'));
 
   } else {
-      $self->render(json => {status=>'ERROR', error=> 'Missing or bad uid.'});
+      $self->render(json => {status=>'error', error=> 'Missing or bad uid.'});
       return;
   }
 
   if($u->Push()){
-      $self->render(json => {status=>'OK'});
+      $self->render(json => {status=>'ok'});
   } else {
-      $self->render(json => {status=>'ERROR', error=> $u->error()});
+      $self->render(json => {status=>'error', error=> $u->error()});
   }
 
 }
@@ -50,9 +50,9 @@ sub purge {
   my $u = $self->EnQ->Obj('User');
   $u->uid($self->param('uid'));
   if($u->Purge() && !$u->error){
-      $self->render(json => {status=>'OK'});
+      $self->render(json => {status=>'ok'});
   } else {
-      $self->render(json => {status=>'ERROR', error=> $u->error()});
+      $self->render(json => {status=>'error', error=> $u->error()});
   }
 }
 
