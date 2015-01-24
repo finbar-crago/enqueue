@@ -59,3 +59,7 @@ function($routeProvider) {
 	});
 
 }]);
+
+NewCtrl('Users',   '/api/users/');
+NewCtrl('Queues', '/api/queues/');
+NewCtrl('System', '/api/system/');

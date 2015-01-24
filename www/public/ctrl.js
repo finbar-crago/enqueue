@@ -1,4 +1,3 @@
-
 function NewCtrl(name, rpc){
 var EnqCtrl = angular.module('EnqCtrl'+name, []);
 
@@ -53,5 +52,3 @@ function ($rootScope, $scope, $routeParams, $http){
 }]);
 
 }
-
-NewCtrl('Users', '/api/users/');
