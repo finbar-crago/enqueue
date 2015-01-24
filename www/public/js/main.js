@@ -14,39 +14,39 @@ EnQ.config(['$routeProvider',
 function($routeProvider) {
     $routeProvider.
 
-    	when('/home', {
+    	when('/Home', {
 	    templateUrl: 'view/dashboard.html',
 	    controller:  'DashboardCtrl'
 	}).
 
-    	when('/reports', {
+    	when('/Reports', {
 	    templateUrl: 'view/reports.html',
 	    controller:  'ReportsCtrl'
 	}).
 
-    	when('/logs', {
+    	when('/Logs', {
 	    templateUrl: 'view/logs.html',
 	    controller:  'LogsCtrl'
 	}).
 
 
 
-	when('/admin/agents', {
+	when('/Admin/Agents', {
 	    templateUrl: 'view/agents.html',
 	    controller:  'UsersCtrl'
 	}).
 
-	when('/admin/agent/:uid', {
+	when('/Admin/Agents/:uid', {
 	    templateUrl: 'view/agents.html',
 	    controller:  'UsersCtrl'
 	}).
 
-	when('/admin/queues', {
+	when('/Admin/Queues', {
 	    templateUrl: 'view/queues.html',
 	    controller:  'QueuesCtrl'
 	}).
 
-	when('/admin/system', {
+	when('/Admin/System', {
 	    templateUrl: 'view/system.html',
 	    controller:  'SystemCtrl'
 	}).
