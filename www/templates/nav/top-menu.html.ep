@@ -1,4 +1,0 @@
-<ul class="nav navbar-right top-nav">
-%= include 'nav/top-menu-alert'
-%= include 'nav/top-menu-queue'
-</ul>
