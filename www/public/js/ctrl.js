@@ -51,4 +51,5 @@ function ($rootScope, $scope, $routeParams, $http){
 
 }]);
 
+return EnqCtrl;
 }
