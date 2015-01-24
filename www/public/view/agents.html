@@ -16,27 +16,27 @@
 
       <div class="form-group">
 	<label>User ID</label>
-	<input class="form-control" ng-model="data[uid].uid" ng-disabled="uid">
+	<input class="form-control" tabindex="1" ng-model="data[uid].uid" ng-disabled="uid">
       </div>
 
       <div class="form-group">
 	<label>Password</label>
-	<input type="password" class="form-control" ng-model="data[uid].pass">
+	<input type="password" class="form-control" tabindex="3" ng-model="data[uid].pass">
       </div>
 
-      <button type="submit" class="btn btn-default">Submit</button>
-      <a class="btn btn-default" href="#/admin/agents">Reset</a>
+      <button type="submit" class="btn btn-default" tabindex="5" >Submit</button>
+      <a class="btn btn-default" href="#/admin/agents">Clear</a>
 
     </div><div class="col-lg-6">
 
       <div class="form-group">
 	<label>Name</label>
-	<input class="form-control" ng-model="data[uid].name">
+	<input class="form-control" tabindex="2" ng-model="data[uid].name">
       </div>
 
       <div class="form-group">
 	<label>Extn</label>
-	<input class="form-control" ng-model="data[uid].extn">
+	<input class="form-control" tabindex="4" ng-model="data[uid].extn">
       </div>
 
     </div>
