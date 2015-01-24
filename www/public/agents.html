@@ -1,4 +1,4 @@
-<div class="row" ng-hide="allGood"><div class="col-lg-12">
+<div class="row" ng-hide="!error"><div class="col-lg-12">
 
   <div class="panel panel-danger">
     <div class="panel-heading">
@@ -11,17 +11,17 @@
 
 </div></div><div class="row">
 
-  <form ng-submit="submit()" role="form">
+  <form ng-submit="push()" role="form">
     <div class="col-lg-6">
 
       <div class="form-group">
 	<label>User ID</label>
-	<input class="form-control" ng-model="user.uid" ng-disabled="isEdit">
+	<input class="form-control" ng-model="data[uid].uid" ng-disabled="uid">
       </div>
 
       <div class="form-group">
 	<label>Password</label>
-	<input type="password" class="form-control" ng-model="user.pass">
+	<input type="password" class="form-control" ng-model="data[uid].pass">
       </div>
 
       <button type="submit" class="btn btn-default">Submit</button>
@@ -31,12 +31,12 @@
 
       <div class="form-group">
 	<label>Name</label>
-	<input class="form-control" ng-model="user.name">
+	<input class="form-control" ng-model="data[uid].name">
       </div>
 
       <div class="form-group">
 	<label>Extn</label>
-	<input class="form-control" ng-model="user.extn">
+	<input class="form-control" ng-model="data[uid].extn">
       </div>
 
     </div>
@@ -54,14 +54,14 @@
 	<th></th>
 	</tr>
     </thead>
-    <tbody ng:repeat="i in users">
+    <tbody ng:repeat="(u,i) in data">
       <tr>
-	<td>{{data[i].uid}}</td>
-	<td>{{data[i].name}}</td>
-	<td>{{data[i].extn}}</td>
+	<td>{{i.uid}}</tbd>
+	<td>{{i.name}}</td>
+	<td>{{i.extn}}</td>
 	<td class="col-md-1">
-	  <a class="btn btn-info"   ng-href="#/admin/agent/{{data[i].uid}}"><i class="fa fa-pencil-square-o"></i></a>
-	  <a class="btn btn-danger" ng-click="purge(data[i].uid)"><i class="fa fa-times"></i></a>
+	  <a class="btn btn-info"   ng-href="#/admin/agent/{{i.uid}}"><i class="fa fa-pencil-square-o"></i></a>
+	  <a class="btn btn-danger" ng-click="purge(i.uid)"><i class="fa fa-times"></i></a>
 	</td>
       </tr>
     </tbody>
