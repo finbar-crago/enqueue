@@ -13,8 +13,8 @@ sub startup {
 
   $r->get('/' => sub { shift->reply->static('index.html'); });
 
-  $r   ->get('/EnQ/*/:obj')     ->to('Search#List' );
-  $r  ->post('/EnQ/*/:obj')     ->to('Search#Query');
+  $r   ->get('/EnQ/@/:obj')     ->to('Search#List' );
+  $r  ->post('/EnQ/@/:obj')     ->to('Search#Query');
 
   $r   ->get('/EnQ/!/:obj/'    )->to('Basic#List' );
   $r   ->get('/EnQ/!/:obj/:uid')->to('Basic#Pull' );
