@@ -13,11 +13,10 @@ sub startup {
 
   $r->get('/' => sub { shift->reply->static('index.html'); });
 
-  $r->get('/api/users')->to('Users#list');
-  $r->get('/api/users/:uid')->to('Users#pull');
-  $r->post('/api/users/:uid')->to('Users#push');
-  $r->delete('/api/users/:uid')->to('Users#purge');
-
+  $r   ->get('/EnQ/!/:obj')     ->to('Basic#List' );
+  $r   ->get('/EnQ/!/:obj/:uid')->to('Basic#Pull' );
+  $r  ->post('/EnQ/!/:obj/:uid')->to('Basic#Push' );
+  $r->delete('/EnQ/!/:obj/:uid')->to('Basic#Purge');
 
 }
 

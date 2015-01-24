@@ -1,15 +1,15 @@
-package EnQ::WWW::Users;
+package EnQ::WWW::Basic;
 use Mojo::Base 'Mojolicious::Controller';
 
-sub list {
+sub List {
   my $self = shift;
   my $l = $self->EnQ->Obj('List');
-  $self->render(json => { status => 'ok', count => $l->type('User'), list => $l->list() }  );
+  $self->render(json => { status => 'ok', count => $l->type( $self->param('obj') ), list => $l->list() }  );
 }
 
-sub pull {
+sub Pull {
   my $self = shift;
-  my $u = $self->EnQ->Obj('User');
+  my $u = $self->EnQ->Obj($self->param('obj'));
   if($u->Pull($self->param('uid')) && !$u->error){
       $self->render(json => {status=>'ok', data=>{$u->Data}});
   } else {
@@ -17,9 +17,9 @@ sub pull {
   }
 }
 
-sub push {
+sub Push {
   my $self = shift;
-  my $u = $self->EnQ->Obj('User');
+  my $u = $self->EnQ->Obj($self->param('obj'));
 
   if(defined($self->req->json) && ($self->req->json->{'uid'} =~ /^[a-z0-9]{3,}/i)){
 
@@ -45,9 +45,9 @@ sub push {
 
 }
 
-sub purge {
+sub Purge {
   my $self = shift;
-  my $u = $self->EnQ->Obj('User');
+  my $u = $self->EnQ->Obj($self->param('obj'));
   $u->uid($self->param('uid'));
   if($u->Purge() && !$u->error){
       $self->render(json => {status=>'ok'});
