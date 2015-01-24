@@ -1,4 +1,4 @@
-package EnQ::Search;
+package EnQ::Query;
 use strict;
 use warnings;
 
@@ -8,6 +8,6 @@ sub new {
     return bless $self, $class;
 }
 
-sub Search { }
+sub Run { }
 
 1;
