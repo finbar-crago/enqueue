@@ -15,43 +15,41 @@ function($routeProvider) {
     $routeProvider.
 
     	when('/home', {
-	    templateUrl: 'dashboard.html',
+	    templateUrl: 'view/dashboard.html',
 	    controller:  'DashboardCtrl'
 	}).
 
     	when('/reports', {
-	    templateUrl: 'reports.html',
+	    templateUrl: 'view/reports.html',
 	    controller:  'ReportsCtrl'
 	}).
 
     	when('/logs', {
-	    templateUrl: 'logs.html',
+	    templateUrl: 'view/logs.html',
 	    controller:  'LogsCtrl'
 	}).
 
 
 
 	when('/admin/agents', {
-	    templateUrl: 'agents.html',
+	    templateUrl: 'view/agents.html',
 	    controller:  'UsersCtrl'
 	}).
 
 	when('/admin/agent/:uid', {
-	    templateUrl: 'agents.html',
+	    templateUrl: 'view/agents.html',
 	    controller:  'UsersCtrl'
 	}).
 
 	when('/admin/queues', {
-	    templateUrl: 'queues.html',
+	    templateUrl: 'view/queues.html',
 	    controller:  'QueuesCtrl'
 	}).
 
 	when('/admin/system', {
-	    templateUrl: 'system.html',
+	    templateUrl: 'view/system.html',
 	    controller:  'SystemCtrl'
 	}).
-
-
 
 
 	otherwise({
