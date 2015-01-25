@@ -31,13 +31,13 @@ function($routeProvider) {
 
 
 
-	when('/Admin/Agents', {
-	    templateUrl: 'view/agents.html',
+	when('/Admin/Users', {
+	    templateUrl: 'view/users.html',
 	    controller:  'UsersCtrl'
 	}).
 
-	when('/Admin/Agents/:uid', {
-	    templateUrl: 'view/agents.html',
+	when('/Admin/Users/:uid', {
+	    templateUrl: 'view/users.html',
 	    controller:  'UsersCtrl'
 	}).
 
