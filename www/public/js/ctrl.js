@@ -10,14 +10,14 @@ function ($rootScope, $scope, $routeParams, $http){
     $scope.data  = {};
     $scope.error = null;
 
-    $http.get(rpc).success(function(obj){
+    $http.get('/EnQ/!/' + rpc).success(function(obj){
 	if(obj.status != 'ok'){
 	    $scope.error = obj.error;
 	    return;
 	}
 
         obj.list.forEach(function(i){
-            $http.get(rpc+i).success(function(j){
+            $http.get('/EnQ/!/' + rpc + '/' + i).success(function(j){
 		if(j.status != 'ok'){
 		    $scope.error = r.error;
 		    return;
@@ -29,7 +29,7 @@ function ($rootScope, $scope, $routeParams, $http){
 
     $scope.push = function() {
 	if(!$scope.data[uid]) return;
-	$http.post(rpc + uid, $scope.data[uid]).success(function(r){
+	$http.post('/EnQ/!/' + rpc + '/' + uid, $scope.data[uid]).success(function(r){
 	    if(r.status != 'ok'){
 		$scope.error = r.error;
 		return;
@@ -40,7 +40,7 @@ function ($rootScope, $scope, $routeParams, $http){
 
     $scope.purge = function(id){
 	if(!id) return;
-	$http.delete(rpc + id).success(function(r){
+	$http.delete('/EnQ/!/' + rpc + '/' + id).success(function(r){
 	    if(r.status != 'ok'){
 		$scope.error = r.error;
 		return;

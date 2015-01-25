@@ -58,6 +58,6 @@ function($routeProvider) {
 
 }]);
 
-NewCtrl('Users' ,'/EnQ/!/User/');
-NewCtrl('Queues','/EnQ/!/Queue/');
-NewCtrl('System','/EnQ/!/System/');
+NewCtrl('Users' ,'User');
+NewCtrl('Queues','Queue');
+NewCtrl('System','System');
