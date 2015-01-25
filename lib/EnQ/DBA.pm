@@ -79,17 +79,24 @@ sub Q {
 }
 
 sub QObj {
-        my $self = shift;
-	my ($obj, $args) = @_;
+    use Data::Dumper;
+    my $self = shift;
+    my ($obj, $args) = @_;
+    $args = '1' if !$args;
 
-	my $o = "EnQ::Obj::$obj"->{'Object'};
-	return undef if !$o->{'db'};
+    my $o = "EnQ::Obj::$obj"->new();
+    return undef if !$o->_db;
+    my $db = ${$o->_db};
 
-	my $sql = sprintf("SELECT %s FROM %s WHERE %s", $o->{'db'}{'key'}, $o->{'db'}{'talbe'}, '1');
-	my $ret = $self->Q($sql);
+    my $sql = sprintf("SELECT * FROM %s WHERE %s", $db->{'table'}, $args);
+    my $dat = $self->{'dbh'}->selectall_hashref($sql, $db->{'key'});
 
-	use Data::Dumper;
-	print Dumper $ret;
+    my $ret = {};
+    foreach my $i (keys $dat){
+	$ret->{$i} = "EnQ::Obj::$obj"->new();
+	$ret->{$i}->Data($dat->{$i});
+    }
+    return $ret;
 }
 
 sub get {
