@@ -10,21 +10,11 @@ function ($rootScope, $scope, $routeParams, $http){
     $scope.data  = {};
     $scope.error = null;
 
-    $http.get('/EnQ/!/' + rpc).success(function(obj){
-	if(obj.status != 'ok'){
+    $http.get('/EnQ/@/' + rpc).success(function(obj){
+	if(obj.status == 'ok')
+	    $scope.data = obj.data;
+	else
 	    $scope.error = obj.error;
-	    return;
-	}
-
-        obj.list.forEach(function(i){
-            $http.get('/EnQ/!/' + rpc + '/' + i).success(function(j){
-		if(j.status != 'ok'){
-		    $scope.error = r.error;
-		    return;
-		}
-                $scope.data[j.data.uid] = j.data;
-            });
-        });
     });
 
     $scope.push = function() {
