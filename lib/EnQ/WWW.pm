@@ -16,7 +16,6 @@ sub startup {
   $r   ->get('/EnQ/@/:obj')     ->to('Search#List' );
   $r  ->post('/EnQ/@/:obj')     ->to('Search#Query');
 
-  $r   ->get('/EnQ/!/:obj/'    )->to('Basic#List' );
   $r   ->get('/EnQ/!/:obj/:uid')->to('Basic#Pull' );
   $r  ->post('/EnQ/!/:obj/:uid')->to('Basic#Push' );
   $r->delete('/EnQ/!/:obj/:uid')->to('Basic#Purge');

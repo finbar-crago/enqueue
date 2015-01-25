@@ -1,12 +1,6 @@
 package EnQ::WWW::Basic;
 use Mojo::Base 'Mojolicious::Controller';
 
-sub List {
-  my $self = shift;
-  my $l = $self->EnQ->Obj('List');
-  $self->render(json => { status => 'ok', count => $l->type( $self->param('obj') ), list => $l->list() }  );
-}
-
 sub Pull {
   my $self = shift;
   my $u = $self->EnQ->Obj($self->param('obj'));
