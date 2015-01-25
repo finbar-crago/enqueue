@@ -78,6 +78,18 @@ sub Q {
     return $self->{'dbh'}->selectall_arrayref($sql);
 }
 
+sub QObj {
+        my $self = shift;
+	my ($obj, $args) = @_;
+
+	my $o = "EnQ::Obj::$obj::\$Object";
+	if(!$o->db)
+	    return undef;
+
+	my $sql = sprintf("SELECT %s FROM %s WHERE %s", $o->db->key, $o->db->talbe, '1');
+	$self->Q($sql);
+}
+
 sub get {
     my $self = shift;
     my ($table, $key, $id) = @_;
