@@ -9,7 +9,9 @@ sub List {
 
 sub Query {
     my $self = shift;
-    $self->render(json => { status => 'to-do' });
+    my $q = $self->req->json->{'q'};
+    my $list = $self->EnQ->{'DBA'}->QObjData($self->param('obj'), $q);
+    $self->render(json => { status => $list?'ok':'error', data => $list });
 }
 
 1;
