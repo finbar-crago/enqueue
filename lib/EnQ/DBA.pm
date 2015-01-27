@@ -104,17 +104,15 @@ sub QObjData {
     my ($obj, $args) = @_;
     $args = '1' if !$args;
 
-    my $o = "EnQ::Obj::$obj"->new();
-    return undef if !$o->_db;
-    my $db = ${$o->_db};
+    my $db = ${$EnQ::Obj::{$obj.'::'}{'Object'}}->{'db'};
+    return undef if ! $db;
 
     my $sql = sprintf("SELECT * FROM %s WHERE %s", $db->{'table'}, $args);
     my $dat = $self->{'dbh'}->selectall_hashref($sql, $db->{'key'});
 
     my $ret = {};
     foreach my $i (keys $dat){
-	$o = "EnQ::Obj::$obj"->new();
-	$ret->{$i} = { $o->Data($dat->{$i}) };
+	$ret->{$i} = {"EnQ::Obj::$obj"->new()->Data($dat->{$i})};
     }
     return $ret;
 }
