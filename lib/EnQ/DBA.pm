@@ -100,7 +100,6 @@ sub QObj {
 }
 
 sub QObjData {
-    use Data::Dumper;
     my $self = shift;
     my ($obj, $args) = @_;
     $args = '1' if !$args;
@@ -112,7 +111,6 @@ sub QObjData {
     my $sql = sprintf("SELECT * FROM %s WHERE %s", $db->{'table'}, $args);
     my $dat = $self->{'dbh'}->selectall_hashref($sql, $db->{'key'});
 
-    use Data::Dumper;
     my $ret = {};
     foreach my $i (keys $dat){
 	$o = "EnQ::Obj::$obj"->new();
