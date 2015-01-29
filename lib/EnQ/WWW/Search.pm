@@ -3,8 +3,14 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub List {
     my $self = shift;
-    my $list = $self->EnQ->{'DBA'}->QObjData($self->param('obj'));
-    $self->render(json => { status => $list?'ok':'error', data => $list });
+    my $Obj  = $self->param('obj');
+    my $key  = $self->EnQ->{'Obj'}->{$Obj}->{'db'}->{'key'};
+    my $list = $self->EnQ->{'DBA'}->QObjData($Obj);
+    $self->render(json => {
+	    status => $list?'ok':'error',
+	    info => { name => $Obj ,key => $key },
+	    data => $list,
+	});
 }
 
 sub Query {
