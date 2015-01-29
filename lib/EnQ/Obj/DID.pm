@@ -6,10 +6,11 @@ use parent qw(EnQ::Object);
 
 our $Object = {
     def => {
-	'did'    => EnQ::Object::Field(),
-	'act' => EnQ::Object::Field(),
+	'did'       => EnQ::Object::Field(),
+	'act'       => EnQ::Object::Field(),
 	'act_queue' => EnQ::Object::Field(),
 	'act_exten' => EnQ::Object::Field(),
+	'act_user'  => EnQ::Object::Field(),
     },
     db => {
 	key   => 'did',
