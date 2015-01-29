@@ -46,6 +46,11 @@ function($routeProvider) {
 	    controller:  'QueuesCtrl'
 	}).
 
+	when('/Admin/Queues/:uid', {
+	    templateUrl: 'view/queues.html',
+	    controller:  'QueuesCtrl'
+	}).
+
 	when('/Admin/Landing', {
 	    templateUrl: 'view/landing.html',
 	    controller:  'LandingCtrl'
