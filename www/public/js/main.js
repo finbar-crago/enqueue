@@ -46,6 +46,16 @@ function($routeProvider) {
 	    controller:  'QueuesCtrl'
 	}).
 
+	when('/Admin/Landing', {
+	    templateUrl: 'view/landing.html',
+	    controller:  'LandingCtrl'
+	}).
+
+	when('/Admin/Landing/:uid', {
+	    templateUrl: 'view/landing.html',
+	    controller:  'LandingCtrl'
+	}).
+
 	when('/Admin/System', {
 	    templateUrl: 'view/system.html',
 	    controller:  'SystemCtrl'
@@ -60,4 +70,5 @@ function($routeProvider) {
 
 NewCtrl('Users' ,'User');
 NewCtrl('Queues','Queue');
+NewCtrl('Landing','DID');
 NewCtrl('System','System');
