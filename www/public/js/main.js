@@ -7,6 +7,7 @@ var EnQ = angular.module('EnQ',
 
 			  'EnqCtrlUsers',
 			  'EnqCtrlQueues',
+			  'EnqCtrlLanding',
 			  'EnqCtrlSystem',
 			 ]);
 
