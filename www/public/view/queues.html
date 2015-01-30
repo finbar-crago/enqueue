@@ -16,12 +16,12 @@
 
       <div class="form-group">
 	<label>Name</label>
-	<input class="form-control" tabindex="1" ng-model="data[uid].uid" ng-disabled="uid">
+	<input class="form-control" tabindex="1" ng-model="data[uid].qid" ng-disabled="uid">
       </div>
 
       <div class="form-group">
 	<label>To</label>
-	<select class="form-control" ng-model="data[uid].to">
+	<select class="form-control" ng-model="data[uid].act">
 	  <option>Agents</option>
 	  <option>Voicemail</option>
 	  <option>Extension</option>
@@ -29,18 +29,13 @@
       </div>
 
       <button type="submit" class="btn btn-default" tabindex="5" >Submit</button>
-      <a class="btn btn-default" href="#/admin/agents">Clear</a>
+      <a class="btn btn-default" href="#/admin/Queues">Clear</a>
 
     </div><div class="col-lg-6">
 
       <div class="form-group">
 	<label>Discription</label>
-	<input class="form-control" tabindex="2" ng-model="data[uid].text">
-      </div>
-
-      <div class="form-group">
-	<label>Landing Number</label>
-	<input class="form-control" tabindex="4" ng-model="data[uid].extn">
+	<input class="form-control" tabindex="2" ng-model="data[uid].txt">
       </div>
 
     </div>
@@ -55,17 +50,16 @@
 	<th class="col-md-2">Queue ID</th>
 	<th class="col-md-3">Discription</th>
 	<th class="col-md-3">To</th>
-	<th>Landing</th>
+	<th></th>
 	</tr>
     </thead>
     <tbody ng:repeat="(u,i) in data">
       <tr>
-	<td>{{i.uid}}</tbd>
-	<td>{{i.text}}</td>
-	<td>{{i.to}}</td>
-	<td>{{i.extn}}</td>
+	<td>{{i.qid}}</tbd>
+	<td>{{i.txt}}</td>
+	<td>{{i.act}}</td>
 	<td class="col-md-1">
-	  <a class="btn btn-info"   ng-href="#/Admin/Users/{{i.uid}}"><i class="fa fa-pencil-square-o"></i></a>
+	  <a class="btn btn-info"   ng-href="#/Admin/Queues/{{i.uid}}"><i class="fa fa-pencil-square-o"></i></a>
 	  <a class="btn btn-danger" ng-click="purge(i.uid)"><i class="fa fa-times"></i></a>
 	</td>
       </tr>

@@ -11,10 +11,12 @@ function ($rootScope, $scope, $routeParams, $http){
     $scope.error = null;
 
     $http.get('/EnQ/@/' + rpc).success(function(obj){
-	if(obj.status == 'ok')
+	if(obj.status == 'ok'){
+	    $scope.key  = obj.info.key;
 	    $scope.data = obj.data;
-	else
+	} else {
 	    $scope.error = obj.error;
+	}
     });
 
     $scope.push = function() {
