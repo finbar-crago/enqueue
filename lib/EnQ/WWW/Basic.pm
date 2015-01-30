@@ -15,7 +15,7 @@ sub Push {
   my $self = shift;
   my $u = $self->EnQ->Obj($self->param('obj'));
 
-  if(defined($self->req->json) && ($self->req->json->{'uid'} =~ /^[a-z0-9]{3,}/i)){
+  if(defined($self->req->json) && ($self->req->json->{ ${$u->_db}->{'key'} } =~ /^[a-z0-9]{3,}/i)){
 
       $u->Data($self->req->json);
 
