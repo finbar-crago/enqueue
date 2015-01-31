@@ -14,9 +14,6 @@ my $EnQ = EnQ->new({
 &{\&{$ARGV[0]||'help'}}();
 
 sub pjsip {
-    my $u = $EnQ->Obj('User'); $u->Pull('100');
-
-    use Data::Dumper;
     my $p = $EnQ->{'DBA'}->QObjData('User');
     for my $i (keys($p)){
 
@@ -36,7 +33,15 @@ sub pjsip {
 	print 'auth='.$i;
 	print '';
     }
+}
 
+sub did {
+    my $p = $EnQ->{'DBA'}->QObjData('DID');
+    for my $exten (keys($p)){
+	my $act = $p->{$exten}{'act'};
+	my $to  = $p->{$exten}{lc "act_$act"};
+	printf "exten => %s,1,Macro(EnQ-%s, %s)\n", $exten, $act, $to;
+    }
 }
 
 sub help {
