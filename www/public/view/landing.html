@@ -12,28 +12,49 @@
 </div></div><div class="row">
 
   <form ng-submit="push()" role="form">
-    <div class="col-lg-6">
+    <div class="row">
+      <div class="col-lg-6">
 
       <div class="form-group">
 	<label>DID</label>
 	<input class="form-control" tabindex="1" ng-model="data[uid].did" ng-disabled="uid">
       </div>
 
+      </div><div class="col-lg-6"></div></div>
+    <div class="row"><div class="col-lg-6">
+
       <div class="form-group">
 	<label>To</label>
 	<select class="form-control" tabindex="2" ng-model="data[uid].act">
 	  <option>Queue</option>
+	  <option>Exten</option>
 	  <option>User</option>
-	  <option>Extension</option>
 	</select>
       </div>
 
-      <button type="submit" class="btn btn-default" tabindex="5" >Submit</button>
-      <a class="btn btn-default" href="#/admin/agents">Clear</a>
-
     </div><div class="col-lg-6">
 
-    </div>
+      <div class="form-group" ng-hide="!(data[uid].act == 'Queue')">
+	<label>Queue</label>
+	<input class="form-control" tabindex="1" ng-model="data[uid].act_queue">
+      </div>
+
+      <div class="form-group" ng-hide="!(data[uid].act == 'User')">
+	<label>User</label>
+	<input class="form-control" tabindex="1" ng-model="data[uid].act_user">
+      </div>
+
+      <div class="form-group" ng-hide="!(data[uid].act == 'Exten')">
+	<label>Exten</label>
+	<input class="form-control" tabindex="1" ng-model="data[uid].act_exten">
+      </div>
+
+      </div></div>
+
+      <button type="submit" class="btn btn-default" tabindex="5">Submit</button>
+      <a class="btn btn-default" href="#/admin/agents">Clear</a>
+
+    </div><div class="col-lg-6"></div>
 
   </form>
 
@@ -52,8 +73,8 @@
 	<td>{{i.did}}</tbd>
 	<td>{{i.act}}</td>
 	<td class="col-md-1">
-	  <a class="btn btn-info"   ng-href="#/Admin/Users/{{i.uid}}"><i class="fa fa-pencil-square-o"></i></a>
-	  <a class="btn btn-danger" ng-click="purge(i.uid)"><i class="fa fa-times"></i></a>
+	  <a class="btn btn-info"   ng-href="#/Admin/Landing/{{i.did}}"><i class="fa fa-pencil-square-o"></i></a>
+	  <a class="btn btn-danger" ng-click="purge(i.did)"><i class="fa fa-times"></i></a>
 	</td>
       </tr>
     </tbody>
