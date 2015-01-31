@@ -6,3 +6,39 @@ use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib"; }
 
 use EnQ;
+$\="\n";
+
+my $EnQ = EnQ->new({
+    config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/misc/sample_config.yml|r});
+
+&{\&{$ARGV[0]||'help'}}();
+
+sub pjsip {
+    my $u = $EnQ->Obj('User'); $u->Pull('100');
+
+    use Data::Dumper;
+    my $p = $EnQ->{'DBA'}->QObjData('User');
+    for my $i (keys($p)){
+
+	print '['.$i.']';
+	print 'type=auth';
+	print 'auth_type=userpass';
+	print 'username='.$i;
+	print 'password='.$p->{$i}{'extn'};
+	print '';
+
+	print '['.$p->{$i}{'extn'}.']';
+	print 'type=endpoint';
+	print 'context=from-external';
+	print 'disallow=all';
+	print 'allow=ulaw';
+	print 'transport=transport-udp';
+	print 'auth='.$i;
+	print '';
+    }
+
+}
+
+sub help {
+    print "Usage:";
+}
