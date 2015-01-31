@@ -15,7 +15,7 @@ our $Object = {
     db => {
 	key   => 'did',
 	table => 'did',
-	setup => 'CREATE TABLE did (did TEXT PRIMARY KEY, act TEXT, act_queue TEXT, act_exten TEXT)',
+	setup => 'CREATE TABLE did (did TEXT PRIMARY KEY, act TEXT, act_queue TEXT, act_exten TEXT, act_user TEXT)',
     },
 };
 
