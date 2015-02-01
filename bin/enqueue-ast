@@ -9,7 +9,7 @@ use EnQ;
 $\="\n";
 
 my $EnQ = EnQ->new({
-    config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/misc/sample_config.yml|r});
+    config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/enqueue.yml|r});
 
 &{\&{$ARGV[0]||'help'}}();
 

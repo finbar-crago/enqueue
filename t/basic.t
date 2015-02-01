@@ -5,7 +5,7 @@ BEGIN { unshift @INC, "$FindBin::Bin/../lib" }
 use Test::Simple tests => 12;
 use EnQ;
 
-my $EnQ = EnQ->new({config_file => "$FindBin::Bin/../misc/sample_config.yml"});
+my $EnQ = EnQ->new({config_file => "$FindBin::Bin/../enqueue.yml"});
 my $t0 = $EnQ->Obj('Test');
 my $t1 = $EnQ->Obj('Test');
 

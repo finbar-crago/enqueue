@@ -8,7 +8,7 @@ sub startup {
   my $self = shift;
   my $r = $self->routes;
 
-  my $EnQ = EnQ::->new({config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/misc/sample_config.yml|r});
+  my $EnQ = EnQ::->new({config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/enqueue.yml|r});
   $self->helper(EnQ => sub { return $EnQ });
 
   $r->get('/' => sub { shift->reply->static('index.html'); })->name('Static');
