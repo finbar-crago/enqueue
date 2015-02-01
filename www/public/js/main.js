@@ -69,7 +69,7 @@ function($routeProvider) {
 
 
 	otherwise({
-	    redirectTo: '/'
+	    redirectTo: '/Home'
 	});
 
 }]);
