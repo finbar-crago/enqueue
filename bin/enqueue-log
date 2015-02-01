@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use FindBin;
+BEGIN { unshift @INC, "$FindBin::Bin/../lib"; }
+
+use EnQ;
+$\="\n";
+
+my $EnQ = EnQ->new({
+    config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/enqueue.yml|r});
+
+
+use Data::Dumper;
+sub log2enq {
+    my $e = shift;
+    print Dumper $e;
+}
+
+my $event;
+while(<>){
+    my ($key, $val) = ('','');
+    if(!(($key, $val) = /([^:]+): (.+)/)){
+	log2enq($event) if $event->{'Event'};
+	undef $event;
+	next;
+    }
+
+    $event->{$key} = $val;
+}
