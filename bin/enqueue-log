@@ -6,11 +6,16 @@ use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib"; }
 
 use EnQ;
+use IO::Socket::INET;
 $\="\n";
 
 my $EnQ = EnQ->new({
     config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/enqueue.yml|r});
 
+
+my $socket = new IO::Socket::INET(
+    PeerAddr => '127.0.0.1:5038',
+    Proto    => 'tcp') or die $!;
 
 use Data::Dumper;
 sub log2enq {
@@ -19,7 +24,7 @@ sub log2enq {
 }
 
 my $event;
-while(<>){
+while(<$socket>){
     my ($key, $val) = ('','');
     if(!(($key, $val) = /([^:]+): (.+)/)){
 	log2enq($event) if $event->{'Event'};
