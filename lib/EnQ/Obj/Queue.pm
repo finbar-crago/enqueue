@@ -38,18 +38,13 @@ use parent qw(EnQ::Object);
 our $Object = {
     def => {
 	'qid' => EnQ::Object::Field(),
-	'act' => EnQ::Object::Field(),
 	'txt' => EnQ::Object::Field(),
     },
     db => {
 	key   => 'qid',
 	table => 'queues',
-	setup => 'CREATE TABLE queues (qid TEXT PRIMARY KEY, act TEXT, txt TEXT)',
+	setup => 'CREATE TABLE queues (qid TEXT PRIMARY KEY, txt TEXT)',
     },
 };
-
-sub astConfig {
-    my $self = shift;
-}
 
 1;
