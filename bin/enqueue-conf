@@ -31,6 +31,13 @@ sub pjsip {
 	print 'allow=ulaw';
 	print 'transport=transport-udp';
 	print 'auth='.$i;
+	print 'aors='.$p->{$i}{'extn'};
+	print '';
+
+	print '['.$p->{$i}{'extn'}.']';
+	print 'type=aor';
+	print 'max_contacts=1';
+	print 'remove_existing=yes';
 	print '';
     }
 }
