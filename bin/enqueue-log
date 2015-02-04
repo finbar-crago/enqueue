@@ -6,8 +6,10 @@ use FindBin;
 BEGIN { unshift @INC, "$FindBin::Bin/../lib"; }
 
 use EnQ;
+use POSIX;
 use IO::Socket::INET;
-$\="\n";
+$/="\r\n";
+$\="\r\n";
 
 my $EnQ = EnQ->new({
     config_file => $FindBin::Bin =~ s|(.+/enqueue).+|$1/enqueue.yml|r});
@@ -31,9 +33,16 @@ while(<$socket>){
 }
 
 use Data::Dumper;
+use Mojo::JSON qw(encode_json);
 sub log2enq {
     my $e = shift;
-    print Dumper $e;
+    my $o = $EnQ->Obj('Event');
+    $o->eid(time);
+    $o->type($e->{'Event'});
+    $o->time(POSIX::strftime("%F %T", localtime));
+    $o->json(encode_json($e));
+#   $o->Push();
+    print Dumper $o->Data;
 }
 
 my $event;
