@@ -17,6 +17,19 @@ my $socket = new IO::Socket::INET(
     PeerAddr => '127.0.0.1:5038',
     Proto    => 'tcp') or die $!;
 
+while(<$socket>){
+    chomp;
+    if(m|Asterisk Call Manager/([0-9.]+)|){
+	print $socket 'Action: Login' ;
+	print $socket 'Username: EnQ' ;
+	print $socket 'Secret: EnQ'   ;
+	print $socket 'Events: On'    ;
+	print $socket ''              ;
+    }
+
+    last if /Response: Success/;
+}
+
 use Data::Dumper;
 sub log2enq {
     my $e = shift;
@@ -25,6 +38,7 @@ sub log2enq {
 
 my $event;
 while(<$socket>){
+    chomp;
     my ($key, $val) = ('','');
     if(!(($key, $val) = /([^:]+): (.+)/)){
 	log2enq($event) if $event->{'Event'};
