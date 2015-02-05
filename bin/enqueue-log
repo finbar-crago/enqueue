@@ -41,7 +41,7 @@ sub log2enq {
     $o->type($e->{'Event'});
     $o->time(POSIX::strftime("%F %T", localtime));
     $o->json(encode_json($e));
-#   $o->Push();
+    $o->Push();
     print Dumper $o->Data;
 }
 
