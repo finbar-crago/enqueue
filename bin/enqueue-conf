@@ -51,6 +51,14 @@ sub did {
     }
 }
 
+sub queues {
+    my $q = $EnQ->{'DBA'}->QObjData('Queues');
+    for my $queue (keys($q)){
+	# Conf stuff here!
+    }
+}
+
+
 sub help {
     print "Usage:";
 }
