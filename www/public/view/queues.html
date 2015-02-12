@@ -19,6 +19,11 @@
 	<input class="form-control" tabindex="1" ng-model="data[uid].qid" ng-disabled="uid">
       </div>
 
+      <div class="form-group">
+	<label>Base</label>
+	<input class="form-control" tabindex="3" ng-model="data[uid].base">
+      </div>
+
       <button type="submit" class="btn btn-default" tabindex="3" >Submit</button>
       <a class="btn btn-default" href="#/admin/Queues">Clear</a>
 
@@ -40,7 +45,7 @@
       <tr>
 	<th class="col-md-2">Queue ID</th>
 	<th class="col-md-3">Discription</th>
-	<th class="col-md-3">To</th>
+	<th class="col-md-3">Base</th>
 	<th></th>
 	</tr>
     </thead>
@@ -48,10 +53,10 @@
       <tr>
 	<td>{{i.qid}}</tbd>
 	<td>{{i.txt}}</td>
-	<td>{{i.act}}</td>
+	<td>{{i.base}}</td>
 	<td class="col-md-1">
-	  <a class="btn btn-info"   ng-href="#/Admin/Queues/{{i.uid}}"><i class="fa fa-pencil-square-o"></i></a>
-	  <a class="btn btn-danger" ng-click="purge(i.uid)"><i class="fa fa-times"></i></a>
+	  <a class="btn btn-info"   ng-href="#/Admin/Queues/{{i.qid}}"><i class="fa fa-pencil-square-o"></i></a>
+	  <a class="btn btn-danger" ng-click="purge(i.qid)"><i class="fa fa-times"></i></a>
 	</td>
       </tr>
     </tbody>

@@ -21,7 +21,7 @@ sub pjsip {
 	print 'type=auth';
 	print 'auth_type=userpass';
 	print 'username='.$i;
-	print 'password='.$p->{$i}{'extn'};
+	print 'password='.$p->{$i}{'sip_pass'};
 	print '';
 
 	print '['.$p->{$i}{'extn'}.']';
@@ -52,9 +52,9 @@ sub did {
 }
 
 sub queues {
-    my $q = $EnQ->{'DBA'}->QObjData('Queues');
-    for my $queue (keys($q)){
-	# Conf stuff here!
+    my $q = $EnQ->{'DBA'}->QObjData('Queue');
+    for my $i (keys($q)){
+	print "[$i](".$q->{$i}{'base'}.")";
     }
 }
 
