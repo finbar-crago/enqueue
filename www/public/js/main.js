@@ -72,7 +72,26 @@ function($routeProvider) {
 	    redirectTo: '/Home'
 	});
 
-}]);
+}]).
+
+run(['$rootScope', function ( $rootScope ) {
+
+    $rootScope.niceJson = function (obj){ return JSON.stringify(JSON.parse(obj), null, 4);};
+
+}]).
+
+filter("toArray", function(){
+    return function(obj) {
+        var result = [];
+        angular.forEach(obj, function(val, key) {
+	    result.push(val);
+        });
+        return result;
+    };
+});
+
+
+NewCtrl('Logs' ,'Event');
 
 NewCtrl('Users' ,'User');
 NewCtrl('Queues','Queue');

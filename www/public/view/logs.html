@@ -3,13 +3,17 @@
   <table class="table table-hover">
     <thead>
       <tr>
-	<th></th>
+	<th>Time</th>
+	<th>Type</th>
+	<th>Event</th>
       </tr>
     </thead>
-    <tbody>
+
+    <tbody ng:repeat="i in data | toArray | orderBy:'time':reverse">
       <tr>
-	<th></th>
-      </tr>
-    </tbody>
+        <td>{{i.time}}</td>
+	<td>{{i.type}}</td>
+	<td><pre>{{niceJson(i.json)}}</pre></td>
+
   </table>
 </div>
