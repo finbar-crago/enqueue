@@ -50,12 +50,14 @@ our $Object = {
 	'uid'  => EnQ::Object::Field(),
 	'name' => EnQ::Object::Field(),
 	'extn' => EnQ::Object::Field('REGEX',{regex =>'^[0-9]+$'}),
+	'base' => EnQ::Object::Field(),
 	'pass' => EnQ::Object::Field('WRITE|REGEX|CB',{regex=>'.{8}', cb=>\&hashPass}),
+	'ast_pass' => EnQ::Object::Field(),
     },
     db => {
 	key   => 'uid',
 	table => 'users',
-	setup => 'CREATE TABLE users (uid TEXT PRIMARY KEY, name TEXT, extn TEXT, pass TEXT)',
+	setup => 'CREATE TABLE users (uid TEXT PRIMARY KEY, name TEXT, extn TEXT, base TEXT, pass TEXT, ast_pass TEXT)',
     },
 };
 

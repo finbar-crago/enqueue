@@ -37,13 +37,14 @@ use parent qw(EnQ::Object);
 
 our $Object = {
     def => {
-	'qid' => EnQ::Object::Field(),
-	'txt' => EnQ::Object::Field(),
+	'qid'  => EnQ::Object::Field(),
+	'txt'  => EnQ::Object::Field(),
+	'base' => EnQ::Object::Field(),
     },
     db => {
 	key   => 'qid',
 	table => 'queues',
-	setup => 'CREATE TABLE queues (qid TEXT PRIMARY KEY, txt TEXT)',
+	setup => 'CREATE TABLE queues (qid TEXT PRIMARY KEY, txt TEXT, base TEXT)',
     },
 };
 
