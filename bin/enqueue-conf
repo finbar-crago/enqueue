@@ -15,29 +15,24 @@ my $EnQ = EnQ->new({
 sub pjsip {
     my $p = $EnQ->{'DBA'}->QObjData('User');
     for my $i (keys($p)){
+	my ($extn, $pass) = split /:/, $p->{$i}{'extn'};
+	my $base = (split /@/, $p->{$i}{'extn'})[1] || 'base';
 
-	print '['.$i.']';
+	print '['.$extn.']';
 	print 'type=auth';
 	print 'auth_type=userpass';
-	print 'username='.$i;
-	print 'password='.$p->{$i}{'sip_pass'};
-	print '';
+	print 'username='.$extn;
+	print 'password='.$pass;
 
-	print '['.$p->{$i}{'extn'}.']';
+	print '['.$extn.']('.$base.')';
 	print 'type=endpoint';
-	print 'context=from-external';
-	print 'disallow=all';
-	print 'allow=ulaw';
-	print 'transport=transport-udp';
-	print 'auth='.$i;
-	print 'aors='.$p->{$i}{'extn'};
-	print '';
+	print 'auth='.$extn;
+	print 'aors='.$extn;
 
-	print '['.$p->{$i}{'extn'}.']';
+	print '['.$extn.']';
 	print 'type=aor';
 	print 'max_contacts=1';
 	print 'remove_existing=yes';
-	print '';
     }
 }
 
