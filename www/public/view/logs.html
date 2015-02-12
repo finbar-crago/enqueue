@@ -9,9 +9,9 @@
       </tr>
     </thead>
 
-    <tbody ng:repeat="i in data | toArray | orderBy:'time':reverse">
+    <tbody ng:repeat="(u,i) in data">
       <tr>
-        <td>{{i.time}}</td>
+        <td>{{i.time}} ({{u}})</td>
 	<td>{{i.type}}</td>
 	<td><pre>{{niceJson(i.json)}}</pre></td>
 

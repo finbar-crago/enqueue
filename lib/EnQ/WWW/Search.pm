@@ -5,7 +5,14 @@ sub List {
     my $self = shift;
     my $Obj  = $self->param('obj');
     my $key  = $self->EnQ->{'Obj'}->{$Obj}->{'db'}->{'key'};
-    my $list = $self->EnQ->{'DBA'}->QObjData($Obj);
+
+    my $q = $self->param('q') || '1';
+
+    $q =~ s/ eq / = /g;
+    $q =~ s/ gt / > /g;
+    $q =~ s/ lt / < /g;
+
+    my $list = $self->EnQ->{'DBA'}->QObjData($Obj, $q);
     $self->render(json => {
 	    status => $list?'ok':'error',
 	    info => { name => $Obj ,key => $key },

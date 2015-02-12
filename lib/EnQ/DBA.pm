@@ -86,7 +86,7 @@ sub QObjData {
     my $db = ${$EnQ::Obj::{$obj.'::'}{'Object'}}->{'db'};
     return undef if ! $db;
 
-    my $sql = sprintf("SELECT * FROM %s WHERE %s", $db->{'table'}, $args);
+    my $sql = sprintf("SELECT * FROM %s WHERE %s ORDER BY %s DESC", $db->{'table'}, $args, $db->{'key'});
     my $dat = $self->{'dbh'}->selectall_hashref($sql, $db->{'key'});
 
     my $ret = {};
