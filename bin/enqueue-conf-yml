@@ -8,9 +8,10 @@ my $y = YAML::LoadFile($ARGV[0]);
 
 #queue();
 
-#ivr();
+ivr();
+
 #landing();
-default();
+#default();
 
 sub landing {
     for(@{$y->{'Landing'}}){
@@ -30,9 +31,13 @@ sub queue {
 sub ivr {
     print '[macro-',$y->{'Name'},'-ivr]';
     print 'exetn => s,1,Answer';
-    print 'exetn => s,1,SET(NAME=',$y>{'Name'},')';
-    print 'exetn => s,1,SET(CHANNEL(musicclass)=',$y>{'MusicHold'},')';
-    my $i=2;
+    print 'exetn => s,2,SET(NAME=',$y->{'Name'},')';
+
+    print 'exetn => s,3,GotoIfTime(',$y->{'Hours'  },',mon-fri,*,*?4:EXIT)';
+    print 'exetn => s,4,GotoIfTime(',$y->{'HoursWE'},',sat-sun,*,*?5:EXIT)';
+
+    print 'exetn => s,5,SET(CHANNEL(musicclass)=',$y->{'MusicHold'},')';
+    my $i=5;
     for(@{$y->{'IVR'}}){
 	$j = (/^\(/)?'':',';
 	print 'exetn => s,', $i++, $j, $_ ;
