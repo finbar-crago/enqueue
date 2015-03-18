@@ -3,15 +3,16 @@ use YAML;
 $\ = "\n";
 exit if !$ARGV[0];
 
+use Data::Dumper;
+
 my $y = YAML::LoadFile($ARGV[0]);
 
+#print YAML::Dump($y->{'Queue'} ) ; exit;
 
 #queue();
-
-ivr();
-
+#ivr();
 #landing();
-#default();
+default();
 
 sub landing {
     for(@{$y->{'Landing'}}){
@@ -22,10 +23,14 @@ sub landing {
 }
 
 sub queue {
-    print '[',$y->{'Name'},'-CARE](base)';
-    print '[',$y->{'Name'},'-SUPP](base)';
-    print '[',$y->{'Name'},'-COMP](base)';
-    print '[',$y->{'Name'},'-PAYM](base)';
+    print '[',$y->{'Name'},'](!)';
+    print for(@{$y->{'QueueConf'}});
+    print;
+
+    for(@{$y->{'Queue'}}){
+	print '[',$y->{'Name'},'-',$_->[0],'](base,',$y->{'Name'},')';
+    }
+    print;
 }
 
 sub ivr {
@@ -33,8 +38,8 @@ sub ivr {
     print 'exetn => s,1,Answer';
     print 'exetn => s,2,SET(NAME=',$y->{'Name'},')';
 
-    print 'exetn => s,3,GotoIfTime(',$y->{'Hours'  },',mon-fri,*,*?4:EXIT)';
-    print 'exetn => s,4,GotoIfTime(',$y->{'HoursWE'},',sat-sun,*,*?5:EXIT)';
+    print 'exetn => s,3,GotoIfTime(',$y->{'Hours'  },',mon-fri,*,*?4:TIME)';
+    print 'exetn => s,4,GotoIfTime(',$y->{'HoursWE'},',sat-sun,*,*?5:TIME)';
 
     print 'exetn => s,5,SET(CHANNEL(musicclass)=',$y->{'MusicHold'},')';
     my $i=5;
@@ -42,128 +47,73 @@ sub ivr {
 	$j = (/^\(/)?'':',';
 	print 'exetn => s,', $i++, $j, $_ ;
     }
-
     print 'exetn => s,',$i++,',GoTo(EXIT)';
 
-    print 'exetn => s,',$i++,'(CARE),NoOp';
-    print 'exetn => s,',$i++
-	,',Set(CALLERID(name)=',$y->{'LongName'},': Customer Care)';
+    for(@{$y->{'Queue'}}){
+	print 'exetn => s,',$i++,'(',$_->[0],'),NoOp()';
+	print 'exetn => s,',$i++
+	    ,',Set(CALLERID(name)=',$y->{'LongName'},': ',$_->[2],')';
+	print 'exetn => s,',$i++
+	    ,',Queue(',$y->{'Name'},'-',$_->[0],',,,,',$y->{'TimeOut'},')';
+	print 'exetn => s,',$i++,',GoTo(EXIT)';
+    }
 
-    print 'exetn => s,',$i++
-	,',Queue(',$y->{'Name'},'-CARE,,,,',$y->{'TimeOut'},')';
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
+    for(@{$y->{'Xfer'}}){
+	print 'exetn => s,',$i++,'(',$_->[0],'),NoOp()';
+	print 'exetn => s,',$i++,',Dial(Local/',$_->[2],')';
+	print 'exetn => s,',$i++,',GoTo(EXIT)';
+    }
 
-    print 'exetn => s,',$i++,'(SUPP),NoOp';
-    print 'exetn => s,',$i++
-	,',Set(CALLERID(name)=',$y->{'LongName'},': Support)';
-    print 'exetn => s,',$i++
-	,',Queue(',$y->{'Name'},'-SUPP,,,,',$y->{'TimeOut'},')';
-
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
-
-    print 'exetn => s,',$i++,'(FALT),NoOp';
-    print 'exetn => s,',$i++
-	,',Set(CALLERID(name)=',$y->{'LongName'},': Faults)';
-    print 'exetn => s,',$i++
-	,',Queue(',$y->{'Name'},'-FALT,,,,',$y->{'TimeOut'},')';
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
-
-    print 'exetn => s,',$i++,'(COMP),NoOp';
-    print 'exetn => s,',$i++
-	,',Set(CALLERID(name)=',$y->{'LongName'},': Complaints)';
-    print 'exetn => s,',$i++
-	,',Queue(',$y->{'Name'},'-COMP,,,,',$y->{'TimeOut'},')';
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
-
-    print 'exetn => s,',$i++,'(PAYM),NoOp';
-    print 'exetn => s,',$i++
-	,',Set(CALLERID(name)=',$y->{'LongName'},': Payments)';
-    print 'exetn => s,',$i++
-	,',Queue(',$y->{'Name'},'-PAYM,,,,',$y->{'TimeOut'},')';
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
-
-    print 'exetn => s,',$i++,'(BANK),NoOp';
-    print 'exetn => s,',$i++,',Dial(Local/',$y->{'Bank'},')';
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
-
-    print 'exetn => s,',$i++,'(EXIT),NoOp';
-    for(@{$conf->{'OnExit'}}){
+    print 'exetn => s,',$i++,'(EXIT),NoOp()';
+    for(@{$y->{'OnExit'}}){
 	$j = (/^\(/)?'':',';
 	print 'exetn => s,', $i++, $j, $_ ;
     }
+    print 'exetn => s,',$i++,',Hangup';
+
+    print 'exetn => s,',$i++,'(TIME),NoOp()';
+    for(@{$y->{'Closed'}}){
+	$j = (/^\(/)?'':',';
+	print 'exetn => s,', $i++, $j, $_ ;
+    }
+    print 'exetn => s,',$i++,',Hangup';
 }
 
 sub default {
     landing();
 
-    ## --- Call + XFer Queue/Bank ---
+    print 'exten => ',$y->{'Extn'},'0,1,Answer';
+    print 'exten => ',$y->{'Extn'},'0,2,Macro(',$y->{'Name'},'-IVR)';
+    print 'exten => ',$y->{'Extn'},'0,3,Hangup';
 
-    print 'exten => ',$y->{'Extn'},'1,1,Answer';
-    print 'exten => ',$y->{'Extn'},'1,2,Queue(',$y->{'Name'},'-CARE)';
-    print 'exten => ',$y->{'Extn'},'1,3,Hangup';
+    ## --- Call + XFer Queue/Extn ---
 
-    print 'exten => ',$y->{'Extn'},'2,1,Answer';
-    print 'exten => ',$y->{'Extn'},'2,2,Queue(',$y->{'Name'},'-SUPP)';
-    print 'exten => ',$y->{'Extn'},'2,3,Hangup';
+    for(@{$y->{'Queue'}}){
+	print 'exten => ',$y->{'Extn'}.$_->[1],',1,Answer';
+	print 'exten => ',$y->{'Extn'}.$_->[1]
+	    ,',2,Queue(',$y->{'Name'},'-',$_->[0],')';
+	print 'exten => ',$y->{'Extn'}.$_->[1],',3,Hangup';
+    }
 
-    print 'exten => ',$y->{'Extn'},'3,1,Answer';
-    print 'exten => ',$y->{'Extn'},'3,2,Queue(',$y->{'Name'},'-FALT)';
-    print 'exten => ',$y->{'Extn'},'3,3,Hangup';
+    for(@{$y->{'Xfer'}}){
+	print 'exten => ',$y->{'Extn'}.$_->[1],',1,Answer';
+	print 'exten => ',$y->{'Extn'}.$_->[1],',2,Dial(Local/',$_->[2],')';
+	print 'exten => ',$y->{'Extn'}.$_->[1],',3,Hangup';
+    }
 
-    print 'exten => ',$y->{'Extn'},'4,1,Answer';
-    print 'exten => ',$y->{'Extn'},'4,2,Queue(',$y->{'Name'},'-COMP)';
-    print 'exten => ',$y->{'Extn'},'4,3,Hangup';
+    ## --- Agent LOGIN/LOGOUT ---
 
-    print 'exten => ',$y->{'Extn'},'5,1,Answer';
-    print 'exten => ',$y->{'Extn'},'5,2,Queue(',$y->{'Name'},'-PAYM)';
-    print 'exten => ',$y->{'Extn'},'5,3,Hangup';
+    for(@{$y->{'Queue'}}){
+	print 'exten => *',$y->{'Extn'}.$_->[1],',1,Answer';
+	print 'exten => *',$y->{'Extn'}.$_->[1]
+	    ,',2,AddQueueMember(',$y->{'Name'},'-',$_->[0],')';
+	print 'exten => *',$y->{'Extn'}.$_->[1],',3,Hangup';
 
-    print 'exten => ',$y->{'Extn'},'6,1,Answer';
-    print 'exten => ',$y->{'Extn'},'6,Dial(Local/',$y->{'Bank'},')';
-    print 'exten => ',$y->{'Extn'},'6,3,Hangup';
+	print 'exten => #',$y->{'Extn'}.$_->[1],',1,Answer';
+	print 'exten => #',$y->{'Extn'}.$_->[1]
+	    ,',2,RemoveQueueMember(',$y->{'Name'},'-',$_->[0],')';
+	print 'exten => #',$y->{'Extn'}.$_->[1],',3,Hangup';
+    }
 
-    ## --- Agent LOGIN ---
-
-    print 'exten => *',$y->{'Extn'},'1,1,Answer';
-    print 'exten => *',$y->{'Extn'},'1,2,AddQueueMember(',$y->{'Name'},'-CARE)';
-    print 'exten => *',$y->{'Extn'},'1,3,Hangup';
-
-    print 'exten => *',$y->{'Extn'},'2,1,Answer';
-    print 'exten => *',$y->{'Extn'},'2,2,AddQueueMember(',$y->{'Name'},'-SUPP)';
-    print 'exten => *',$y->{'Extn'},'2,3,Hangup';
-
-    print 'exten => *',$y->{'Extn'},'3,1,Answer';
-    print 'exten => *',$y->{'Extn'},'3,2,AddQueueMember(',$y->{'Name'},'-FALT)';
-    print 'exten => *',$y->{'Extn'},'3,3,Hangup';
-
-    print 'exten => *',$y->{'Extn'},'4,1,Answer';
-    print 'exten => *',$y->{'Extn'},'4,2,AddQueueMember(',$y->{'Name'},'-COMP)';
-    print 'exten => *',$y->{'Extn'},'4,3,Hangup';
-
-    print 'exten => *',$y->{'Extn'},'5,1,Answer';
-    print 'exten => *',$y->{'Extn'},'5,2,AddQueueMember(',$y->{'Name'},'-PAYM)';
-    print 'exten => *',$y->{'Extn'},'5,3,Hangup';
-
-    ## --- Agent LOGOUT ---
-
-    print 'exten => #',$y->{'Extn'},'1,1,Answer';
-    print 'exten => #',$y->{'Extn'},'1,2,RemoveQueueMember(',$y->{'Name'},'-CARE)';
-    print 'exten => #',$y->{'Extn'},'1,3,Hangup';
-
-    print 'exten => #',$y->{'Extn'},'2,1,Answer';
-    print 'exten => #',$y->{'Extn'},'2,2,RemoveQueueMember(',$y->{'Name'},'-SUPP)';
-    print 'exten => #',$y->{'Extn'},'2,3,Hangup';
-
-    print 'exten => #',$y->{'Extn'},'3,1,Answer';
-    print 'exten => #',$y->{'Extn'},'3,2,RemoveQueueMember(',$y->{'Name'},'-FALT)';
-    print 'exten => #',$y->{'Extn'},'3,3,Hangup';
-
-    print 'exten => #',$y->{'Extn'},'4,1,Answer';
-    print 'exten => #',$y->{'Extn'},'4,2,RemoveQueueMember(',$y->{'Name'},'-COMP)';
-    print 'exten => #',$y->{'Extn'},'4,3,Hangup';
-
-    print 'exten => #',$y->{'Extn'},'5,1,Answer';
-    print 'exten => #',$y->{'Extn'},'5,2,RemoveQueueMember(',$y->{'Name'},'-PAYM)';
-    print 'exten => #',$y->{'Extn'},'5,3,Hangup';
-
+    print;
 }
