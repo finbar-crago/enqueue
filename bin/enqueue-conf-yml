@@ -10,9 +10,9 @@ my $y = YAML::LoadFile($ARGV[0]);
 #print YAML::Dump($y->{'Queue'} ) ; exit;
 
 #queue();
-#ivr();
+ivr();
 #landing();
-default();
+#default();
 
 sub landing {
     for(@{$y->{'Landing'}}){
@@ -28,7 +28,8 @@ sub queue {
     print;
 
     for(@{$y->{'Queue'}}){
-	print '[',$y->{'Name'},'-',$_->[0],'](base,',$y->{'Name'},')';
+	print '[',$y->{'Name'},'-',$_->{'ID'},'](base,',$y->{'Name'},')';
+	print for(@{$_->{'Conf'}});
     }
     print;
 }
@@ -50,17 +51,17 @@ sub ivr {
     print 'exetn => s,',$i++,',GoTo(EXIT)';
 
     for(@{$y->{'Queue'}}){
-	print 'exetn => s,',$i++,'(',$_->[0],'),NoOp()';
+	print 'exetn => s,',$i++,'(',$_->{'ID'},'),NoOp()';
 	print 'exetn => s,',$i++
-	    ,',Set(CALLERID(name)=',$y->{'LongName'},': ',$_->[2],')';
+	    ,',Set(CALLERID(name)=',$y->{'LongName'},': ',$_->{'Name'},')';
 	print 'exetn => s,',$i++
-	    ,',Queue(',$y->{'Name'},'-',$_->[0],',,,,',$y->{'TimeOut'},')';
+	    ,',Queue(',$y->{'Name'},'-',$_->{'ID'},',,,,',$y->{'TimeOut'},')';
 	print 'exetn => s,',$i++,',GoTo(EXIT)';
     }
 
     for(@{$y->{'Xfer'}}){
-	print 'exetn => s,',$i++,'(',$_->[0],'),NoOp()';
-	print 'exetn => s,',$i++,',Dial(Local/',$_->[2],')';
+	print 'exetn => s,',$i++,'(',$_->{'ID'},'),NoOp()';
+	print 'exetn => s,',$i++,',Dial(Local/',$_->{'To'},')';
 	print 'exetn => s,',$i++,',GoTo(EXIT)';
     }
 
@@ -89,30 +90,27 @@ sub default {
     ## --- Call + XFer Queue/Extn ---
 
     for(@{$y->{'Queue'}}){
-	print 'exten => ',$y->{'Extn'}.$_->[1],',1,Answer';
-	print 'exten => ',$y->{'Extn'}.$_->[1]
-	    ,',2,Queue(',$y->{'Name'},'-',$_->[0],')';
-	print 'exten => ',$y->{'Extn'}.$_->[1],',3,Hangup';
+	print 'exten => ',$_->{'Extn'},',1,Answer';
+	print 'exten => ',$_->{'Extn'}
+	,',2,Queue(',$y->{'Name'},'-',$_->{'ID'},')';
+	print 'exten => ',$_->{'Extn'},',3,Hangup';
+
+	print 'exten => *',$_->{'Extn'},',1,Answer';
+	print 'exten => *',$_->{'Extn'}
+	,',2,AddQueueMember(',$y->{'Name'},'-',$_->{'ID'},')';
+	print 'exten => *',$_->{'Extn'},',3,Hangup';
+
+	print 'exten => #',$_->{'Extn'},',1,Answer';
+	print 'exten => #',$_->{'Extn'}
+	,',2,RemoveQueueMember(',$y->{'Name'},'-',$_->{'ID'},')';
+	print 'exten => #',$_->{'Extn'},',3,Hangup';
     }
 
     for(@{$y->{'Xfer'}}){
-	print 'exten => ',$y->{'Extn'}.$_->[1],',1,Answer';
-	print 'exten => ',$y->{'Extn'}.$_->[1],',2,Dial(Local/',$_->[2],')';
-	print 'exten => ',$y->{'Extn'}.$_->[1],',3,Hangup';
-    }
-
-    ## --- Agent LOGIN/LOGOUT ---
-
-    for(@{$y->{'Queue'}}){
-	print 'exten => *',$y->{'Extn'}.$_->[1],',1,Answer';
-	print 'exten => *',$y->{'Extn'}.$_->[1]
-	    ,',2,AddQueueMember(',$y->{'Name'},'-',$_->[0],')';
-	print 'exten => *',$y->{'Extn'}.$_->[1],',3,Hangup';
-
-	print 'exten => #',$y->{'Extn'}.$_->[1],',1,Answer';
-	print 'exten => #',$y->{'Extn'}.$_->[1]
-	    ,',2,RemoveQueueMember(',$y->{'Name'},'-',$_->[0],')';
-	print 'exten => #',$y->{'Extn'}.$_->[1],',3,Hangup';
+	next if !$_->{'Extn'};
+	print 'exten => ',$_->{'Extn'},',1,Answer';
+	print 'exten => ',$_->{'Extn'},',2,Dial(Local/',$_->{'To'},')';
+	print 'exten => ',$_->{'Extn'},',3,Hangup';
     }
 
     print;
