@@ -7,10 +7,13 @@ use Data::Dumper;
 
 my $y = YAML::LoadFile($ARGV[0]);
 
+my $telco = $y->{'Name'};
+
 #print YAML::Dump($y->{'Queue'} ) ; exit;
 
 #queue();
-ivr();
+#ivr();
+auto_ivr();
 #landing();
 #default();
 
@@ -78,6 +81,33 @@ sub ivr {
 	print 'exetn => s,', $i++, $j, $_ ;
     }
     print 'exetn => s,',$i++,',Hangup';
+}
+
+sub auto_ivr {    
+    my $pc = 1;
+    print "[macro-$telco--IVR]";
+    my $hello = $y->{'IVR'}->{'Play'}->{'Hello'};
+    print 'extn => s,',$pc++,",Playback($hello)";
+    print 'extn => s,',$pc++,",Macro($telco--IVR-READ)";
+    print '';
+
+    my $pc = 1;
+    print "[macro-$telco--IVR-READ]";
+
+    my $prompts = $y->{'IVR'}->{'Play'}->{'Prompts'};
+    print 'extn => s,',$pc++,',Read(I,',$prompts,',1,,3,5)';
+
+    my @OPT;
+    for(@{$y->{'IVR'}->{'DTMF'}}){
+	$OPT[$_->[0]] = $_->[1];
+    }
+    for(0..9){
+	$i = defined($OPT[$_])?$OPT[$_]:'-IVR-READ';
+	print 'extn => s,',$pc++,",Set(HASH(OPT,$_)=$telco-$i)";
+    }
+    print 'extn => s,',$pc++,',Macro(${HASH(OPT,${I})})';
+    print 'extn => s,',$pc++,",Macro($telco--IVR-READ)";
+    print '';
 }
 
 sub default {
