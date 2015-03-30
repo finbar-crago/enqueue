@@ -105,8 +105,9 @@ sub auto_ivr {
 	$i = defined($OPT[$_])?$OPT[$_]:'-IVR-READ';
 	print 'extn => s,',$pc++,",Set(HASH(OPT,$_)=$telco-$i)";
     }
+    print 'extn => s,',$pc++,",Set(HASH(OPT,#)=$telco--IVR-READ)";
+    print 'extn => s,',$pc++,",Set(HASH(OPT,*)=$telco--IVR-READ)";
     print 'extn => s,',$pc++,',Macro(${HASH(OPT,${I})})';
-    print 'extn => s,',$pc++,",Macro($telco--IVR-READ)";
     print '';
 }
 
