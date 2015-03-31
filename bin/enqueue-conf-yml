@@ -86,42 +86,67 @@ sub ivr {
 sub auto_ivr {    
     my $pc = 1;
     my $hello = $y->{'IVR'}->{'Play'}->{'Hello'};
-    print "[IVR-MAIN--$ID]";
-    print 'exten => s,',$pc++,",Playback($hello)";
-    print 'exten => s,',$pc++,",GoTo(IVR-OPT-$ID,s,1)";
+    print "[IVR-$ID]";
+    print 'exten => s,'.$pc++.",GoSub(IVR-TIME-$ID)";
+    print 'exten => s,'.$pc++.",Playback($hello)";
+    print 'exten => s,'.$pc++.",GoTo(IVR-OPT-$ID,s,1)";
+    print '';
+
+    my $pc = 1;
+    print "[IVR-TIME-$ID]";
+    print 'exten => s,'.$pc++.',ExecIfTime(',$y->{'Hours'},',mon-fri?Return)';
+    print 'exten => s,'.$pc++.',ExecIfTime(',$y->{'HoursWE'},',sat-sun?Return)';
+    print 'exten => s,'.$pc++.",GoTo(EXIT-CLOSED-$ID,s,1)";
     print '';
 
     my $pc = 1;
     my $prompts = $y->{'IVR'}->{'Play'}->{'Prompts'};
     print "[IVR-OPT-$ID]";
-    print 'exten => s,',$pc++,',Read(I,',$prompts,',1,,3,5)';
+    print 'exten => s,',$pc++,',Read(I,',$prompts,',1,,4,7)';
 
     my @OPT;
     $OPT[$_->[0]] = $_->[1] for @{$y->{'IVR'}->{'DTMF'}};
     for(0..9){
 	$i = defined($OPT[$_])?"SUB-$ID-".$OPT[$_]:"IVR-OPT-$ID";
-	print 'exten => s,',$pc++,",Set(HASH(OPT,$_)=$i)";
+	print 'exten => s,'.$pc++.",Set(HASH(OPT,$_)=$i)";
     }
+    print 'exten => s,'.$pc++.",Set(HASH(OPT,#)=IVR-OPT-$ID)";
+    print 'exten => s,'.$pc++.",Set(HASH(OPT,*)=IVR-OPT-$ID)";
+    print 'exten => s,'.$pc++.",Set(HASH(OPT,)=SUB-$ID-".$y->{'DefaultQueue'}.')';
 
-    print 'exten => s,',$pc++,",Set(HASH(OPT,#)=IVR-OPT-$ID)";
-    print 'exten => s,',$pc++,",Set(HASH(OPT,*)=IVR-OPT-$ID)";
-    print 'exten => s,',$pc++,',GoSub(${HASH(OPT,${I})},PRIVACY)';
+    print 'exten => s,'.$pc++.',GoSub(${HASH(OPT,${I})},PRIVACY)';
+    print 'exten => s,'.$pc++.",GoTo(EXIT-FAILED-$ID,s,1)";
     print '';
 
     for(@{$y->{'Queue'}}){
+	my $pc = 1;
 	my $Privacy = $y->{'IVR'}->{'Play'}->{'Privacy'};
 	print "[SUB-$ID-".$_->{'ID'}."]";
-	print 'exten => s,1,ExecIf(["${ARG1}" == "PRIVACY"]?Playback('.$Privacy.'))';
-	print "exten => s,2,Queue($ID-".$_->{'ID'}.")";
-	print "exten => s,3,Hangup";
+	print 'exten => s,'.$pc++.',Set(CALLERID(name)=',$y->{'LongName'},': ',$_->{'Name'},')';
+	print 'exten => s,'.$pc++.',ExecIf($["${ARG1}" = "PRIVACY"]?Playback('.$Privacy.'))';
+	print "exten => s,".$pc++.",Queue($ID-".$_->{'ID'}.")";
+	print "exten => s,".$pc++.",Return";
 	print '';
     }
 
     for(@{$y->{'Xfer'}}){
 	print "[SUB-$ID-".$_->{'ID'}."]";
-	print "extn => s,1,Dial(LOCAL/".$_->{'To'}.")";
+	print "exten => s,1,Dial(LOCAL/".$_->{'To'}.")";
+	print "exten => s,2,Return";
 	print '';
     }
+
+    $pc = 1;
+    print "[EXIT-CLOSED-$ID]";
+    print 'exten => s,'.$pc++.",Hangup";
+    print '';
+
+    $pc = 1;
+    print "[EXIT-FAILED-$ID]";
+    print 'exten => s,'.$pc++.",Hangup";
+    print '';
+
+
 }
 
 sub default {
