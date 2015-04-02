@@ -1,11 +1,16 @@
-package EnQ::Object;
+package EnQ::Ast::AutoIVR;
 use strict;
 use warnings;
+$\ = "\n";
 
-use YAML;
+sub conf_queues { }
+sub conf_extensions_landing { }
 
-sub auto_ivr {    
-    $\ = "\n";
+sub conf_extensions_agent { }
+
+sub conf_extensions_default { }
+
+sub conf_extensions_global {
     my $y = shift;
 
     my $pc = 1;
@@ -60,12 +65,12 @@ sub auto_ivr {
 	print '';
     }
 
-    $pc = 1;
+    my $pc = 1;
     print "[EXIT-CLOSED-$ID]";
     print 'exten => s,'.$pc++.",Hangup";
     print '';
 
-    $pc = 1;
+    my $pc = 1;
     print "[EXIT-FAILED-$ID]";
     print 'exten => s,'.$pc++.",Hangup";
     print '';
