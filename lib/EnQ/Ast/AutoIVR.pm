@@ -3,15 +3,79 @@ use strict;
 use warnings;
 $\ = "\n";
 
-sub conf_queues { }
-sub conf_extensions_landing { }
+sub conf_queues {
+    my $y = shift;
+    my $ID = uc $y->{'Name'};
 
-sub conf_extensions_agent { }
+    print "[$ID](!)";
+    print for(@{$y->{'QueueConf'}});
+    print;
 
-sub conf_extensions_default { }
+    for(@{$y->{'Queue'}}){
+        print '['.$ID.'-'.$_->{'ID'}.'](base,'.$ID.')';
+        print for(@{$_->{'Conf'}});
+    }
+    print;
+}
+
+sub conf_extensions_landing {
+    my $y = shift;
+    my $ID = uc $y->{'Name'};
+
+    for(@{$y->{'Landing'}}){
+        print 'exten => '.$_.',1,Answer';
+        print 'exten => '.$_.',2,GoSub(IVR-'.$ID.')';
+        print 'exten => '.$_.',3,Hangup';
+    }
+
+    print;
+}
+
+sub conf_extensions_agent {
+    my $y = shift;
+    my $ID = uc $y->{'Name'};
+
+    for(@{$y->{'Queue'}}){
+        print 'exten => *'.$_->{'Extn'}.',1,Answer';
+        print 'exten => *'.$_->{'Extn'}.',2,AddQueueMember('.$ID.'-'.$_->{'ID'}.')';
+        print 'exten => *'.$_->{'Extn'}.',3,Hangup';
+
+        print 'exten => #'.$_->{'Extn'}.',1,Answer';
+        print 'exten => #'.$_->{'Extn'}.',2,RemoveQueueMember('.$ID.'-'.$_->{'ID'}.')';
+        print 'exten => #'.$_->{'Extn'}.',3,Hangup';
+    }
+
+}
+
+sub conf_extensions_default {
+    my $y = shift;
+    my $ID = uc $y->{'Name'};
+
+    conf_extensions_landing($y);
+
+    print 'exten => '.$y->{'Extn'}.',1,Answer';
+    print 'exten => '.$y->{'Extn'}.',2,GoSub(IVR-'.$ID.')';
+    print 'exten => '.$y->{'Extn'}.',3,Hangup';
+
+    for(@{$y->{'Queue'}}){
+	print 'exten => '.$_->{'Extn'}.',1,Answer';
+        print 'exten => '.$_->{'Extn'}.',2,Queue('.$ID.'-'.$_->{'ID'}.')';
+        print 'exten => '.$_->{'Extn'}.',3,Hangup';
+    }
+
+    for(@{$y->{'Xfer'}}){
+        next if !$_->{'Extn'};
+        print 'exten => '.$_->{'Extn'}.',1,Answer';
+        print 'exten => '.$_->{'Extn'}.',2,Dial(Local/',$_->{'To'},')';
+        print 'exten => '.$_->{'Extn'}.',3,Hangup';
+    }
+
+    print;
+}
 
 sub conf_extensions_global {
     my $y = shift;
+    my $ID = uc $y->{'Name'};
 
     my $pc = 1;
     my $hello = $y->{'IVR'}->{'Play'}->{'Hello'};
