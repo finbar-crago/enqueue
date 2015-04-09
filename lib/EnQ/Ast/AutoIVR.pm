@@ -9,13 +9,13 @@ sub conf_queues {
 
     print "[$ID](!)";
     print for(@{$y->{'QueueConf'}});
-    print;
+    print '';
 
     for(@{$y->{'Queue'}}){
         print '['.$ID.'-'.$_->{'ID'}.'](base,'.$ID.')';
         print for(@{$_->{'Conf'}});
     }
-    print;
+    print '';
 }
 
 sub conf_extensions_landing {
@@ -28,7 +28,7 @@ sub conf_extensions_landing {
         print 'exten => '.$_.',3,Hangup';
     }
 
-    print;
+    print '';
 }
 
 sub conf_extensions_agent {
@@ -44,7 +44,7 @@ sub conf_extensions_agent {
         print 'exten => #'.$_->{'Extn'}.',2,RemoveQueueMember('.$ID.'-'.$_->{'ID'}.')';
         print 'exten => #'.$_->{'Extn'}.',3,Hangup';
     }
-
+    print '';
 }
 
 sub conf_extensions_default {
@@ -70,7 +70,7 @@ sub conf_extensions_default {
         print 'exten => '.$_->{'Extn'}.',3,Hangup';
     }
 
-    print;
+    print '';
 }
 
 sub conf_extensions_global {
@@ -85,14 +85,14 @@ sub conf_extensions_global {
     print 'exten => s,'.$pc++.",GoTo(IVR-OPT-$ID,s,1)";
     print '';
 
-    my $pc = 1;
+    $pc = 1;
     print "[IVR-TIME-$ID]";
     print 'exten => s,'.$pc++.',ExecIfTime(',$y->{'Hours'},',mon-fri?Return)';
     print 'exten => s,'.$pc++.',ExecIfTime(',$y->{'HoursWE'},',sat-sun?Return)';
     print 'exten => s,'.$pc++.",GoTo(EXIT-CLOSED-$ID,s,1)";
     print '';
 
-    my $pc = 1;
+    $pc = 1;
     my $prompts = $y->{'IVR'}->{'Play'}->{'Prompts'};
     print "[IVR-OPT-$ID]";
     print 'exten => s,',$pc++,',Read(I,',$prompts,',1,,4,7)';
@@ -100,7 +100,7 @@ sub conf_extensions_global {
     my @OPT;
     $OPT[$_->[0]] = $_->[1] for @{$y->{'IVR'}->{'DTMF'}};
     for(0..9){
-	$i = defined($OPT[$_])?"SUB-$ID-".$OPT[$_]:"IVR-OPT-$ID";
+	my $i = defined($OPT[$_])?"SUB-$ID-".$OPT[$_]:"IVR-OPT-$ID";
 	print 'exten => s,'.$pc++.",Set(HASH(OPT,$_)=$i)";
     }
     print 'exten => s,'.$pc++.",Set(HASH(OPT,#)=IVR-OPT-$ID)";
@@ -129,12 +129,12 @@ sub conf_extensions_global {
 	print '';
     }
 
-    my $pc = 1;
+    $pc = 1;
     print "[EXIT-CLOSED-$ID]";
     print 'exten => s,'.$pc++.",Hangup";
     print '';
 
-    my $pc = 1;
+    $pc = 1;
     print "[EXIT-FAILED-$ID]";
     print 'exten => s,'.$pc++.",Hangup";
     print '';

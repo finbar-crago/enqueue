@@ -1,186 +1,26 @@
 #!/usr/bin/env perl
-use YAML;
 $\ = "\n";
+
+use YAML;
+use FindBin;
+BEGIN { unshift @INC, "$FindBin::Bin/../lib"; }
+
+use EnQ::Ast::AutoIVR;
+
 exit if !$ARGV[0];
-
-use Data::Dumper;
-
 my $y = YAML::LoadFile($ARGV[0]);
 
-my $ID = uc $y->{'Name'};
+print " --- EnQ::Ast::AutoIVR::conf_queues --- ";
+EnQ::Ast::AutoIVR::conf_queues($y);
 
-#print YAML::Dump($y->{'Queue'} ) ; exit;
+print " --- EnQ::Ast::AutoIVR::conf_extensions_landing --- ";
+EnQ::Ast::AutoIVR::conf_extensions_landing($y);
 
-#queue();
-#ivr();
-auto_ivr();
-#landing();
-#default();
+print " --- EnQ::Ast::AutoIVR::conf_extensions_agent --- ";
+EnQ::Ast::AutoIVR::conf_extensions_agent($y);
 
-sub landing {
-    for(@{$y->{'Landing'}}){
-	print 'exten => ',$_,',1,Answer';
-	print 'exten => ',$_,',2,Macro(',$y->{'Name'},'-IVR)';
-	print 'exten => ',$_,',3,Hangup';
-    }
-}
+print " --- EnQ::Ast::AutoIVR::conf_extensions_default --- ";
+EnQ::Ast::AutoIVR::conf_extensions_default($y);
 
-sub queue {
-    print '[',$y->{'Name'},'](!)';
-    print for(@{$y->{'QueueConf'}});
-    print;
-
-    for(@{$y->{'Queue'}}){
-	print '[',$y->{'Name'},'-',$_->{'ID'},'](base,',$y->{'Name'},')';
-	print for(@{$_->{'Conf'}});
-    }
-    print;
-}
-
-sub ivr {
-    print '[macro-',$y->{'Name'},'-ivr]';
-    print 'exetn => s,1,Answer';
-    print 'exetn => s,2,SET(NAME=',$y->{'Name'},')';
-
-    print 'exetn => s,3,GotoIfTime(',$y->{'Hours'  },',mon-fri,*,*?4:TIME)';
-    print 'exetn => s,4,GotoIfTime(',$y->{'HoursWE'},',sat-sun,*,*?5:TIME)';
-
-    print 'exetn => s,5,SET(CHANNEL(musicclass)=',$y->{'MusicHold'},')';
-    my $i=5;
-    for(@{$y->{'IVR'}}){
-	$j = (/^\(/)?'':',';
-	print 'exetn => s,', $i++, $j, $_ ;
-    }
-    print 'exetn => s,',$i++,',GoTo(EXIT)';
-
-    for(@{$y->{'Queue'}}){
-	print 'exetn => s,',$i++,'(',$_->{'ID'},'),NoOp()';
-	print 'exetn => s,',$i++
-	    ,',Set(CALLERID(name)=',$y->{'LongName'},': ',$_->{'Name'},')';
-	print 'exetn => s,',$i++
-	    ,',Queue(',$y->{'Name'},'-',$_->{'ID'},',,,,',$y->{'TimeOut'},')';
-	print 'exetn => s,',$i++,',GoTo(EXIT)';
-    }
-
-    for(@{$y->{'Xfer'}}){
-	print 'exetn => s,',$i++,'(',$_->{'ID'},'),NoOp()';
-	print 'exetn => s,',$i++,',Dial(Local/',$_->{'To'},')';
-	print 'exetn => s,',$i++,',GoTo(EXIT)';
-    }
-
-    print 'exetn => s,',$i++,'(EXIT),NoOp()';
-    for(@{$y->{'OnExit'}}){
-	$j = (/^\(/)?'':',';
-	print 'exetn => s,', $i++, $j, $_ ;
-    }
-    print 'exetn => s,',$i++,',Hangup';
-
-    print 'exetn => s,',$i++,'(TIME),NoOp()';
-    for(@{$y->{'Closed'}}){
-	$j = (/^\(/)?'':',';
-	print 'exetn => s,', $i++, $j, $_ ;
-    }
-    print 'exetn => s,',$i++,',Hangup';
-}
-
-sub auto_ivr {    
-    my $pc = 1;
-    my $hello = $y->{'IVR'}->{'Play'}->{'Hello'};
-    print "[IVR-$ID]";
-    print 'exten => s,'.$pc++.",GoSub(IVR-TIME-$ID)";
-    print 'exten => s,'.$pc++.",Playback($hello)";
-    print 'exten => s,'.$pc++.",GoTo(IVR-OPT-$ID,s,1)";
-    print '';
-
-    my $pc = 1;
-    print "[IVR-TIME-$ID]";
-    print 'exten => s,'.$pc++.',ExecIfTime(',$y->{'Hours'},',mon-fri?Return)';
-    print 'exten => s,'.$pc++.',ExecIfTime(',$y->{'HoursWE'},',sat-sun?Return)';
-    print 'exten => s,'.$pc++.",GoTo(EXIT-CLOSED-$ID,s,1)";
-    print '';
-
-    my $pc = 1;
-    my $prompts = $y->{'IVR'}->{'Play'}->{'Prompts'};
-    print "[IVR-OPT-$ID]";
-    print 'exten => s,',$pc++,',Read(I,',$prompts,',1,,4,7)';
-
-    my @OPT;
-    $OPT[$_->[0]] = $_->[1] for @{$y->{'IVR'}->{'DTMF'}};
-    for(0..9){
-	$i = defined($OPT[$_])?"SUB-$ID-".$OPT[$_]:"IVR-OPT-$ID";
-	print 'exten => s,'.$pc++.",Set(HASH(OPT,$_)=$i)";
-    }
-    print 'exten => s,'.$pc++.",Set(HASH(OPT,#)=IVR-OPT-$ID)";
-    print 'exten => s,'.$pc++.",Set(HASH(OPT,*)=IVR-OPT-$ID)";
-    print 'exten => s,'.$pc++.",Set(HASH(OPT,)=SUB-$ID-".$y->{'DefaultQueue'}.')';
-
-    print 'exten => s,'.$pc++.',GoSub(${HASH(OPT,${I})},PRIVACY)';
-    print 'exten => s,'.$pc++.",GoTo(EXIT-FAILED-$ID,s,1)";
-    print '';
-
-    for(@{$y->{'Queue'}}){
-	my $pc = 1;
-	my $Privacy = $y->{'IVR'}->{'Play'}->{'Privacy'};
-	print "[SUB-$ID-".$_->{'ID'}."]";
-	print 'exten => s,'.$pc++.',Set(CALLERID(name)=',$y->{'LongName'},': ',$_->{'Name'},')';
-	print 'exten => s,'.$pc++.',ExecIf($["${ARG1}" = "PRIVACY"]?Playback('.$Privacy.'))';
-	print "exten => s,".$pc++.",Queue($ID-".$_->{'ID'}.")";
-	print "exten => s,".$pc++.",Return";
-	print '';
-    }
-
-    for(@{$y->{'Xfer'}}){
-	print "[SUB-$ID-".$_->{'ID'}."]";
-	print "exten => s,1,Dial(LOCAL/".$_->{'To'}.")";
-	print "exten => s,2,Return";
-	print '';
-    }
-
-    $pc = 1;
-    print "[EXIT-CLOSED-$ID]";
-    print 'exten => s,'.$pc++.",Hangup";
-    print '';
-
-    $pc = 1;
-    print "[EXIT-FAILED-$ID]";
-    print 'exten => s,'.$pc++.",Hangup";
-    print '';
-
-
-}
-
-sub default {
-    landing();
-
-    print 'exten => ',$y->{'Extn'},'0,1,Answer';
-    print 'exten => ',$y->{'Extn'},'0,2,Macro(',$y->{'Name'},'-IVR)';
-    print 'exten => ',$y->{'Extn'},'0,3,Hangup';
-
-    ## --- Call + XFer Queue/Extn ---
-
-    for(@{$y->{'Queue'}}){
-	print 'exten => ',$_->{'Extn'},',1,Answer';
-	print 'exten => ',$_->{'Extn'}
-	,',2,Queue(',$y->{'Name'},'-',$_->{'ID'},')';
-	print 'exten => ',$_->{'Extn'},',3,Hangup';
-
-	print 'exten => *',$_->{'Extn'},',1,Answer';
-	print 'exten => *',$_->{'Extn'}
-	,',2,AddQueueMember(',$y->{'Name'},'-',$_->{'ID'},')';
-	print 'exten => *',$_->{'Extn'},',3,Hangup';
-
-	print 'exten => #',$_->{'Extn'},',1,Answer';
-	print 'exten => #',$_->{'Extn'}
-	,',2,RemoveQueueMember(',$y->{'Name'},'-',$_->{'ID'},')';
-	print 'exten => #',$_->{'Extn'},',3,Hangup';
-    }
-
-    for(@{$y->{'Xfer'}}){
-	next if !$_->{'Extn'};
-	print 'exten => ',$_->{'Extn'},',1,Answer';
-	print 'exten => ',$_->{'Extn'},',2,Dial(Local/',$_->{'To'},')';
-	print 'exten => ',$_->{'Extn'},',3,Hangup';
-    }
-
-    print;
-}
+print " --- EnQ::Ast::AutoIVR::conf_extensions_global --- ";
+EnQ::Ast::AutoIVR::conf_extensions_global($y);
