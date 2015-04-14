@@ -3,6 +3,10 @@ use strict;
 use warnings;
 $\ = "\n";
 
+sub info {
+    return { www => '' };
+}
+
 sub conf_queues {
     my $y = shift;
     my $ID = uc $y->{'Name'};
@@ -40,7 +44,6 @@ sub conf_extensions_agent {
         print 'exten => #'.$_->{'Extn'}.',2,RemoveQueueMember('.$ID.'-'.$_->{'ID'}.')';
         print 'exten => #'.$_->{'Extn'}.',3,Hangup';
     }
-    print '';
 }
 
 sub conf_extensions_default {
