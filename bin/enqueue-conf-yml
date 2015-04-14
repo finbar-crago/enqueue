@@ -8,19 +8,12 @@ BEGIN { unshift @INC, "$FindBin::Bin/../lib"; }
 use EnQ::Ast::AutoIVR;
 
 exit if !$ARGV[0];
+exit if !$ARGV[1];
+
 my $y = YAML::LoadFile($ARGV[0]);
 
-print " --- EnQ::Ast::AutoIVR::conf_queues --- ";
-EnQ::Ast::AutoIVR::conf_queues($y);
-
-print " --- EnQ::Ast::AutoIVR::conf_extensions_landing --- ";
-EnQ::Ast::AutoIVR::conf_extensions_landing($y);
-
-print " --- EnQ::Ast::AutoIVR::conf_extensions_agent --- ";
-EnQ::Ast::AutoIVR::conf_extensions_agent($y);
-
-print " --- EnQ::Ast::AutoIVR::conf_extensions_default --- ";
-EnQ::Ast::AutoIVR::conf_extensions_default($y);
-
-print " --- EnQ::Ast::AutoIVR::conf_extensions_global --- ";
-EnQ::Ast::AutoIVR::conf_extensions_global($y);
+foreach(@{$y->{'List'}}){
+    &{$EnQ::Ast::{$_->[0].'::'}{$ARGV[1]}}(
+	YAML::LoadFile($_->[1])
+    );
+}
