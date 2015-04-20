@@ -11,10 +11,10 @@ use EnQ::Ast::Groups;
 exit if !$ARGV[0];
 exit if !$ARGV[1];
 
-my $y = YAML::LoadFile($ARGV[0]);
+my $y = YAML::LoadFile($ARGV[0].'/MASTER.yml');
 
 foreach(@{$y->{'List'}}){
     &{$EnQ::Ast::{$_->[0].'::'}{$ARGV[1]}}(
-	YAML::LoadFile($_->[1])
+	YAML::LoadFile($ARGV[0].'/'.$_->[1])
     );
 }
