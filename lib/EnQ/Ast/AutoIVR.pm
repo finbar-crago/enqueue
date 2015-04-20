@@ -26,7 +26,7 @@ sub conf_extensions_landing {
 
     for(@{$y->{'Landing'}}){
         print 'exten => '.$_.',1,Answer';
-        print 'exten => '.$_.',2,GoSub(IVR-'.$ID.')';
+        print 'exten => '.$_.',2,GoSub(IVR-'.$ID.',s,1)';
         print 'exten => '.$_.',3,Hangup';
     }
 }
@@ -53,7 +53,7 @@ sub conf_extensions_default {
     conf_extensions_landing($y);
 
     print 'exten => '.$y->{'Extn'}.',1,Answer';
-    print 'exten => '.$y->{'Extn'}.',2,GoSub(IVR-'.$ID.')';
+    print 'exten => '.$y->{'Extn'}.',2,GoSub(IVR-'.$ID.',s,1)';
     print 'exten => '.$y->{'Extn'}.',3,Hangup';
 
     for(@{$y->{'Queue'}}){
@@ -77,7 +77,7 @@ sub conf_extensions_global {
     my $pc = 1;
     my $hello = $y->{'IVR'}->{'Play'}->{'Hello'};
     print "[IVR-$ID]";
-    print 'exten => s,'.$pc++.",GoSub(IVR-TIME-$ID)";
+    print 'exten => s,'.$pc++.",GoSub(IVR-TIME-$ID,s,1)";
     print 'exten => s,'.$pc++.",Playback($hello)";
     print 'exten => s,'.$pc++.",GoTo(IVR-OPT-$ID,s,1)";
 
@@ -103,7 +103,7 @@ sub conf_extensions_global {
     print 'exten => s,'.$pc++.",Set(HASH(OPT,*)=IVR-OPT-$ID)";
     print 'exten => s,'.$pc++.",Set(HASH(OPT,)=SUB-$ID-".$y->{'DefaultQueue'}.')';
 
-    print 'exten => s,'.$pc++.',GoSub(${HASH(OPT,${I})},PRIVACY)';
+    print 'exten => s,'.$pc++.',GoSub(${HASH(OPT,${I})},s,1,PRIVACY)';
     print 'exten => s,'.$pc++.",GoTo(EXIT-FAILED-$ID,s,1)";
 
     for(@{$y->{'Queue'}}){
